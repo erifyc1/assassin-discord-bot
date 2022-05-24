@@ -14,16 +14,25 @@ const discordAuth = process.env.DISCORD_AUTH;
 
 
 let guildsData;
+let channelData;
 
 
 client.on("ready", async () => {
+    // set up bot
     console.log(`Logged in as ${client.user.tag}`);
+    client.user.setActivity('cyclic.games', { type: 'COMPETING' });
+
+    // read files
     fs.readFile('./data/guilds.json', 'utf-8', (err, data) => {
         if (err) throw err;
         guildsData = JSON.parse(data.toString());
-        console.log('Read from file successfully.');
+        console.log('Read from ./data/guilds.json');
     });
-    client.user.setActivity('testing' );
+    fs.readFile('channel-structure.json', 'utf-8', (err, data) => {
+        if (err) throw err;
+        channelData = JSON.parse(data.toString());
+        console.log('Read from channel-structure.json');
+    });
 });
 
 client.on("messageCreate", async (msg) => {
@@ -35,12 +44,7 @@ client.on("messageCreate", async (msg) => {
             msg.reply('channel structure has already been generated');
         }
         else {
-            const category = await msg.guild.channels.create("Cyclic Assassin Game", { type: "GUILD_CATEGORY"});
-            const currentGuild = {
-                id: guildsData.guilds.length, 
-                guildID: msg.guild.id,
-                categoryID: category.id
-            }
+            const currentGuild = await generateChannels(msg.guild);
             guildsData.guilds.push(currentGuild);
             updateJson();
             msg.reply('appended new entry');
@@ -52,7 +56,10 @@ client.on("messageCreate", async (msg) => {
             let category = (await client.channels.fetch(guildsData.guilds[idx].categoryID).catch((err) => {
                 console.log('Failed to find category');
             }));
-            if (category) category.delete();
+            if (category) {
+                category.children.mapValues(V => V.delete());
+                category.delete();
+            }
             guildsData.guilds = guildsData.guilds.filter((elem) => elem.guildID != msg.guild.id);
             updateJson();
             msg.reply('deleted channel structure');
@@ -60,24 +67,71 @@ client.on("messageCreate", async (msg) => {
         else {
             msg.reply('cannot delete, channel not generated')
         }
-
+        
     }
-
+    else if (txt == '~reset') {
+        guildsData = { "guilds": [] };
+    }
+    
 });
 
 
-function updateJson() {
-    fs.writeFile('./data/guilds.json', JSON.stringify(guildsData), (err) => {
-        if (err) throw err;
-        console.log('guildsData written');
-    });
+async function updateJson() {
+    if (JSON.stringify(guildsData).length > 10) {
+        fs.writeFile('./data/guilds.json', JSON.stringify(guildsData), (err) => {
+            if (err) throw err;
+            console.log('guildsData written');
+        });
+        
+    }
+    else {
+        console.log('did not write, guildsData too short');
+    }
 }
 
 function generated(guildID) {
     return guildsData.guilds.some((elem) => elem.guildID == guildID);
 }
 
+async function generateChannels(guild) {
 
+    const category = await guild.channels.create(channelData.category.name, { 
+        type: channelData.category.type,
+        permissionOverwrites: [
+            {
+                id: guild.id,
+                allow: channelData.permissionPresets[channelData.category.permissions].allow,
+                deny: channelData.permissionPresets[channelData.category.permissions].deny
+            }
+        ]
+    })
+    .catch(console.error);
+    const guildData = {
+        id: guildsData.guilds.length, 
+        guildID: guild.id,
+        categoryID: category.id,
+        channels: {}
+    }
+    for (const channel of channelData.channels) {
+        let guildChannel = await guild.channels.create(channel.name, { 
+            type: channel.type,
+            permissionOverwrites: [
+                {
+                    id: guild.id,
+                    allow: channelData.permissionPresets[channel.permissions].allow,
+                    deny: channelData.permissionPresets[channel.permissions].deny
+                }
+            ]
+        })
+        .catch(console.error);
+        guildChannel.setParent(category.id);
+        guildData.channels[channel.abv] = guildChannel;
+        if (channel.type == 'GUILD_TEXT' && channel.default_message != "") {
+            guildChannel.send(channel.default_message);
+        }
+    }
+    return guildData;
+}
 
 
 
