@@ -6,6 +6,7 @@ export const data = new SlashCommandBuilder()
     .setDescription('Initializes the game by generating the channel structure.');
     
 export async function execute(interaction, guildsData, channelData) {
+    await interaction.deferReply();
     if (generated(guildsData, interaction.guild.id)) {
         interaction.reply('Failed to initialize channels, channels have already been initialized.');
     }

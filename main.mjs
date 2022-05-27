@@ -18,14 +18,13 @@ client.commands = new Collection();
 const commandsPath = './commands';
 const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.mjs'));
 
-console.log('importing slash commands');
+console.log('Importing slash commands:');
 for (const file of commandFiles) {
-    console.log('\timported ' + commandsPath + '/' + file);
+    console.log('\t' + commandsPath + '/' + file);
     import(commandsPath + '/' + file).then((command) => {
         client.commands.set(command.data.name, command);
     });
 }
-
 
 let guildsData;
 let channelData;
@@ -49,10 +48,10 @@ client.on("ready", async () => {
     });
 
     // register slash commands
-    console.log('registering slash commands');
+    console.log('Registering slash commands to all known guilds.');
 	client.guilds.fetch().then((guilds) => {
 		guilds.map((guild) => {
-            console.log('\tregistered ' + guild.id);
+            console.log('\tRegistered guildID: ' + guild.id);
 			registerCommands(guild.id);
 		});
 	})
@@ -60,7 +59,7 @@ client.on("ready", async () => {
 
 client.on("guildCreate", async (guild) => {
     // register slash commands
-    console.log('\tregistered ' + guild.id);
+    console.log('\tRegistered guildID: ' + guild.id);
     registerCommands(guild.id);
 });
 
@@ -69,6 +68,23 @@ client.on("messageCreate", async (msg) => {
     if (!txt.startsWith('~')) return;
     else if (txt === '~reset') {
         guildsData = { "guilds": [] };
+    }
+    else if (txt === '~debug') {
+        const params = new URLSearchParams();
+        params.append('username', '1');
+        params.append('password', '1');
+        const res = await fetch('http://www.cyclic.games/api-token-auth/', {
+            method: 'post',
+            body: params
+        });
+        const data = await res.json();
+        msg.reply(data.token);
+        const res2 = await fetch('http://www.cyclic.games/getTarget/4', {
+            method: 'get',
+            headers: { 'Authorization': ('Token ' + data.token) }
+        });
+        const data2 = await res2.json();
+        console.log(data2);
     }
     
 });
@@ -80,25 +96,26 @@ client.on('interactionCreate', async interaction => {
 
 	if (!command) return;
 	try {
-        await interaction.deferReply();
 		// console.log(command.data.name);
 		switch (command.data.name) {
 			case 'delete':
                 await command.execute(interaction, guildsData, client);
                 break;
-            case 'init': 
+            case 'init':
 				await command.execute(interaction, guildsData, channelData);
-				break;
-            case 'clear':
-                await command.execute(interaction, client);
                 break;
             default:
                 await command.execute(interaction);
                 break;
 		}
 	} catch (error) {
+        if (interaction.replied) {
+            await interaction.editReply({ content: 'There was an error while executing this command!', ephemeral: true });
+        }
+        else {
+            await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+        }
 		console.error(error);
-		await interaction.editReply({ content: 'There was an error while executing this command!', ephemeral: true });
 	}
 });
 

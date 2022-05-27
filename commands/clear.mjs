@@ -8,8 +8,9 @@ export const data = new SlashCommandBuilder()
 			.setDescription('How many messages to delete. (default = 10, max = 50)')
 			.setRequired(false));
     
-export async function execute(interaction, client) {
-    const num_messages = interaction.options.getInteger('num_messages');
+export async function execute(interaction) {
+    await interaction.deferReply();
+    let num_messages = interaction.options.getInteger('num_messages');
     num_messages = (num_messages ? num_messages : 10);
     if (num_messages <= 50 && num_messages > 0) {
         const channel = await interaction.member.guild.channels.fetch(interaction.channelId);

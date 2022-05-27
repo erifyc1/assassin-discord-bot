@@ -6,6 +6,7 @@ export const data = new SlashCommandBuilder()
     .setDescription('Removes all game-related channels and messages.');
     
 export async function execute(interaction, guildsData, client) {
+    await interaction.deferReply();
     if (generated(guildsData, interaction.guild.id)) {
         const idx = guildsData.guilds.findIndex((elem) => elem.guildID === interaction.guild.id);
         let category = (await client.channels.fetch(guildsData.guilds[idx].categoryID).catch((err) => {
