@@ -3,7 +3,6 @@ import fetch from 'node-fetch';
 import { config } from 'dotenv'
 import fs from 'fs'
 import { registerCommands } from './deploy-commands.js'
-import * as utils from './utils.mjs'
 // import mongoose from 'mongoose'
 // mongoose.connect()
 
@@ -18,9 +17,9 @@ client.commands = new Collection();
 const commandsPath = './commands';
 const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.mjs'));
 
-console.log('Importing slash commands:');
+await printDebug('Importing slash commands:');
 for (const file of commandFiles) {
-    console.log('\t' + commandsPath + '/' + file);
+    await printDebug('\t' + commandsPath + '/' + file);
     import(commandsPath + '/' + file).then((command) => {
         client.commands.set(command.data.name, command);
     });
@@ -32,26 +31,26 @@ let channelData;
 
 client.on("ready", async () => {
     // set up bot
-    console.log(`Logged in as ${client.user.tag}`);
+    await printDebug(`Logged in as ${client.user.tag}`);
     client.user.setActivity('cyclic.games', { type: 'COMPETING' });
 
     // read files
     fs.readFile('./data/guilds.json', 'utf-8', (err, data) => {
         if (err) throw err;
         guildsData = JSON.parse(data.toString());
-        console.log('Read from ./data/guilds.json');
+        printDebug('Read from ./data/guilds.json');
     });
     fs.readFile('channel-structure.json', 'utf-8', (err, data) => {
         if (err) throw err;
         channelData = JSON.parse(data.toString());
-        console.log('Read from channel-structure.json');
+        printDebug('Read from channel-structure.json');
     });
 
     // register slash commands
-    console.log('Registering slash commands to all known guilds.');
+    await printDebug('Registering slash commands to all known guilds.');
 	client.guilds.fetch().then((guilds) => {
 		guilds.map((guild) => {
-            console.log('\tRegistered guildID: ' + guild.id);
+            printDebug('\tRegistered guild: ' + guild.name + ' (' + guild.id + ')');
 			registerCommands(guild.id);
 		});
 	})
@@ -59,7 +58,7 @@ client.on("ready", async () => {
 
 client.on("guildCreate", async (guild) => {
     // register slash commands
-    console.log('\tRegistered guildID: ' + guild.id);
+    await printDebug('\tRegistered guild: ' + guild.name + ' (' + guild.id + ')');
     registerCommands(guild.id);
 });
 
@@ -84,41 +83,80 @@ client.on("messageCreate", async (msg) => {
             headers: { 'Authorization': ('Token ' + data.token) }
         });
         const data2 = await res2.json();
-        console.log(data2);
+        await printDebug(data2);
     }
     
 });
 
 client.on('interactionCreate', async interaction => {
-	if (!interaction.isCommand()) return;
-
-	const command = client.commands.get(interaction.commandName);
-
-	if (!command) return;
-	try {
-		// console.log(command.data.name);
-		switch (command.data.name) {
-			case 'delete':
-                await command.execute(interaction, guildsData, client);
-                break;
-            case 'init':
-				await command.execute(interaction, guildsData, channelData);
-                break;
-            default:
-                await command.execute(interaction);
-                break;
-		}
-	} catch (error) {
-        if (interaction.replied) {
-            await interaction.editReply({ content: 'There was an error while executing this command!', ephemeral: true });
+	if (interaction.isCommand()) {
+        const command = client.commands.get(interaction.commandName);
+    
+        if (!command) return;
+        try {
+            await printDebug('-> command triggered: ' + command.data.name);
+            switch (command.data.name) {
+                case 'delete':
+                    await command.execute(interaction, guildsData, client);
+                    break;
+                case 'init':
+                    await command.execute(interaction, guildsData, channelData);
+                    break;
+                default:
+                    await command.execute(interaction);
+                    break;
+            }
+        } catch (error) {
+            if (interaction.replied || interaction.deferred) {
+                await interaction.editReply({ content: 'There was an error while executing this command!', ephemeral: true });
+            }
+            else {
+                await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+            }
+            console.error(error);
         }
-        else {
-            await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+    }
+    else if (interaction.isButton()) {
+        try {
+            switch (interaction.customId) {
+                case 'loginbutton':
+                    const loginCommand = client.commands.get('login');
+                    loginCommand.showLoginModal(interaction);
+                    break;
+                default:
+                    return;
+            }
         }
-		console.error(error);
-	}
+        catch (error) { console.error(error); }
+    }
+    else if (interaction.isModalSubmit()) {
+        try {
+            switch (interaction.customId) {
+                case 'loginmodal':
+                    const username = interaction.fields.getTextInputValue('username');
+                    const password = interaction.fields.getTextInputValue('password');
+                    // const loginCommand = client.commands.get('login');
+                    // loginCommand.showLoginModal(interaction);
+                    interaction.reply('user: ' + username + '\npass: ' + password);
+                    break;
+                default:
+                    return;
+            }
+        }
+        catch (error) { console.error(error); }
+    }
+
 });
 
-
+async function printDebug(string) {
+    const debug_gid = '976344115547615252';
+    const debug_chid = '980356193245593662';
+    const guild = client.guilds.cache.get(debug_gid);
+    if (guild) {
+        const channel = guild.channels.cache.get(debug_chid);
+        if (string && channel) channel.send('`' + string + '`');
+    }
+    console.log(string);
+}
 
 client.login(discordAuth);
