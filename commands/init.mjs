@@ -1,5 +1,6 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { updateJson } from '../utils.mjs'
+import { MessageEmbed } from 'discord.js';
 
 export const data = new SlashCommandBuilder()
     .setName('init')
@@ -8,7 +9,7 @@ export const data = new SlashCommandBuilder()
 export async function execute(interaction, guildsData, channelData) {
     await interaction.deferReply();
     if (generated(guildsData, interaction.guild.id)) {
-        interaction.reply('Failed to initialize channels, channels have already been initialized.');
+        interaction.editReply('Failed to initialize channels, channels have already been initialized.');
     }
     else {
         const currentGuild = await generateChannels(guildsData, channelData, interaction.guild);
@@ -54,6 +55,12 @@ async function generateChannels(guildsData, channelData, guild) {
         if (channel.type === 'GUILD_TEXT' && channel.default_message !== "") {
             guildChannel.send(channel.default_message);
         }
+        if (channel.type === 'GUILD_TEXT' && channel.embeds) {
+            channel.embeds.forEach(async (embed) => {
+                const embedObj = await makeEmbed(embed);
+                guildChannel.send({ embeds: [embedObj] });
+            })
+        }
     }
     return guildData;
 }
@@ -61,4 +68,22 @@ async function generateChannels(guildsData, channelData, guild) {
 
 function generated(guildsData, guildID) {
     return guildsData.guilds.some((elem) => elem.guildID === guildID);
+}
+
+async function makeEmbed(embedData) {
+    // reqired fields
+    const embed = new MessageEmbed()
+	.setTitle(embedData.title)
+	.setColor(embedData.color)
+	.setDescription(embedData.description);
+
+	if (embedData.url) embed.setURL(embedData.url);
+    if (embedData.author) embed.setAuthor(embedData.author);
+	if (embedData.thumbnail && embedData.thumbnail.url) embed.setThumbnail(embedData.thumbnail.url);
+    if (embedData.fields) embed.addFields(embedData.fields);
+    if (embedData.image && embedData.image.url) embed.setImage(embedData.image.url)
+	if (embedData.footer) embed.setFooter(embedData.footer);
+
+    embed.setTimestamp()
+    return embed;
 }
