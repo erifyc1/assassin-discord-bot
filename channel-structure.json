@@ -14,16 +14,33 @@
             "default_message": "",
             "embeds": [
                 {
-                    "color": "0xff00f",
+                    "color": "0xff1111",
                     "title": "So, what is Assassin?",
-                    "description": "Assassin is a live-action game in which players try to eliminate one another using mock kill methods, in an effort to become the last surviving player.",
-                    "thumbnail": {
-                        "url": "https://i.imgur.com/a/GclRBkw.png"
-                    },
+                    "description": "Assassin is a live-action game in which players try to eliminate one another using mock kill methods, in an effort to become the last surviving player.\n\u2800",
                     "fields": [
                         {
-                            "name": ".",
-                            "value": "1. Each player will receive one target whom you must eliminate through various 'kill methods'.\n2. If you successfully assassinate your target, using one of the kill methods, you receive a reward and a new target (your target's former target).\n3. Each player will receive one target whom you must eliminate through various 'kill methods'.\n\t- Assassinating your target removes them from the game.\n4. There will be a weekly Town Hall phase (Sunday 00:00 CDT -> 23:59 CDT), where players propose various new rules and kill methods.\n5. The game ends after all players except one are eliminated, after which the champion and receive a large reward.",
+                            "name": "1. Each of you receive a target.",
+                            "value": "You must eliminate your target through various mock kill methods.\n\u2800",
+                            "inline": "false"
+                        },
+                        {
+                            "name": "2. Assassinating your target removes them from the game.",
+                            "value": "If you successfully assassinate your target, you receive a __*reward*__ and a new target (your target's former target).\n\u2800",
+                            "inline": "false"
+                        },
+                        {
+                            "name": "3. Avoid being assassinated.",
+                            "value": "Keep a watchful eye for your unknown assassin. (it could be anyone)\n\u2800",
+                            "inline": "false"
+                        },
+                        {
+                            "name": "4. Take part in the weekly Town Hall phase.",
+                            "value": "During the Town Hall phase `(Sunday 00:00 CDT -> 23:59 CDT)`, you can create and vote on proposals to add, modify, or remove rules or kill methods.\n\u2800",
+                            "inline": "false"
+                        },
+                        {
+                            "name": "5. The game ends after all players except one are eliminated.",
+                            "value": "After which the champion, top killers, and voting participants receive rewards.\n\u2800",
                             "inline": "false"
                         }
                     ],
@@ -32,7 +49,12 @@
                         "icon_url": "https://i.imgur.com/a/GclRBkw.png"
                     }
                 }
-            ]
+            ],
+            "button": {
+                "customId": "joinbutton",
+                "label": "JOIN NOW",
+                "style": "SUCCESS"
+            }
         },
         {
             "abv": "rules",
@@ -72,7 +94,7 @@
             "type": "GUILD_TEXT",
             "topic": "The channel to have game related or casual conversation.",
             "permissions": "default-text",
-            "default_message": "<@553081051325399090>"
+            "default_message": "https://giphy.com/gifs/reaction-l36kU80xPf0ojG0Erg"
         },
         {
             "abv": "genVoice",

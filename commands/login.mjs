@@ -20,7 +20,7 @@ export async function execute(interaction) {
         // await interaction.channel.send({ content: 'Check your DM for confirmation.' });
     };
     
-    export async function showLoginModal(interaction) {
+export async function showLoginModal(interaction) {
     const modal = new Modal()
         .addComponents(
             new MessageActionRow()

@@ -1,21 +1,21 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { updateJson } from '../utils.mjs'
-import { MessageEmbed } from 'discord.js';
+import { MessageActionRow, MessageButton, MessageEmbed } from 'discord.js';
 
 export const data = new SlashCommandBuilder()
     .setName('init')
     .setDescription('Initializes the game by generating the channel structure.');
     
 export async function execute(interaction, guildsData, channelData) {
-    await interaction.deferReply();
+    if (!interaction.replied && !interaction.deferred) await interaction.deferReply();
     if (generated(guildsData, interaction.guild.id)) {
-        interaction.editReply('Failed to initialize channels, channels have already been initialized.');
+        if (interaction.deferred) interaction.editReply('Failed to initialize channels, channels have already been initialized.');
     }
     else {
         const currentGuild = await generateChannels(guildsData, channelData, interaction.guild);
         guildsData.guilds.push(currentGuild);
         updateJson(guildsData);
-        interaction.editReply('Channels initialized successfully.');
+        if (interaction.deferred) interaction.editReply('Channels initialized successfully.');
     }
 };
 
@@ -52,14 +52,22 @@ async function generateChannels(guildsData, channelData, guild) {
         .catch(console.error);
         guildChannel.setParent(category.id);
         guildData.channels[channel.abv] = guildChannel.id;
-        if (channel.type === 'GUILD_TEXT' && channel.default_message !== "") {
-            guildChannel.send(channel.default_message);
-        }
-        if (channel.type === 'GUILD_TEXT' && channel.embeds) {
-            channel.embeds.forEach(async (embed) => {
-                const embedObj = await makeEmbed(embed);
-                guildChannel.send({ embeds: [embedObj] });
-            })
+
+        if (channel.type === 'GUILD_TEXT') {
+            if (channel.default_message !== "") {
+                guildChannel.send(channel.default_message);
+            }
+            if (channel.embeds) {
+                channel.embeds.forEach(async (embed) => {
+                    const embedObj = await makeEmbed(embed);
+                    guildChannel.send({ embeds: [embedObj] });
+                })
+            }
+            if (channel.button) {
+                const buttonObj = await makeButton(channel.button);
+                const row = new MessageActionRow().addComponents(buttonObj);
+                guildChannel.send({ components: [row] })
+            }
         }
     }
     return guildData;
@@ -86,4 +94,14 @@ async function makeEmbed(embedData) {
 
     embed.setTimestamp()
     return embed;
+}
+
+async function makeButton(buttonData) {
+    
+    const button = new MessageButton()
+    .setStyle(buttonData.style)
+    .setCustomId(buttonData.customId)
+    .setLabel(buttonData.label);
+
+    return button;
 }

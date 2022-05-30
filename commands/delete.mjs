@@ -6,7 +6,7 @@ export const data = new SlashCommandBuilder()
     .setDescription('Removes all game-related channels and messages.');
     
 export async function execute(interaction, guildsData, client) {
-    await interaction.deferReply();
+    if (!interaction.replied && !interaction.deferred) await interaction.deferReply();
     if (generated(guildsData, interaction.guild.id)) {
         const idx = guildsData.guilds.findIndex((elem) => elem.guildID === interaction.guild.id);
         let category = (await client.channels.fetch(guildsData.guilds[idx].categoryID).catch((err) => {
@@ -18,10 +18,10 @@ export async function execute(interaction, guildsData, client) {
         }
         guildsData.guilds = guildsData.guilds.filter((elem) => elem.guildID != interaction.guild.id);
         updateJson(guildsData);
-        interaction.editReply('Channels deleted successfully.');
+        if (interaction.deferred) interaction.editReply('Channels deleted successfully.');
     }
     else {
-        interaction.editReply('Cannot delete channels, channels not detected.')
+        if (interaction.deferred) interaction.editReply('Cannot delete channels, channels not detected.')
     }
 };
 
