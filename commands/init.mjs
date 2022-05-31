@@ -41,7 +41,7 @@ async function generateChannels(channelData, permissionData, roles, guild, categ
         channels[channel.abv] = guildChannel.id;
         // send default message, button, and/or embed
         if (channel.type === 'GUILD_TEXT') {
-            if (channel.default_message !== "") {
+            if (channel.default_message) {
                 guildChannel.send(channel.default_message);
             }
             if (channel.embeds) {
@@ -95,8 +95,7 @@ async function makeEmbed(embedData) {
     if (embedData.fields) embed.addFields(embedData.fields);
     if (embedData.image && embedData.image.url) embed.setImage(embedData.image.url)
 	if (embedData.footer) embed.setFooter(embedData.footer);
-    
-    embed.setTimestamp()
+    if (embedData.timestamp && embedData.timestamp === 'true') embed.setTimestamp();
     return embed;
 }
 

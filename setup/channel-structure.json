@@ -35,6 +35,7 @@
                     "color": "0xff1111",
                     "title": "So, what is Assassin?",
                     "description": "Assassin is a live-action game in which players try to eliminate one another using mock kill methods, in an effort to become the last surviving player.\n\u2800",
+                    "timestamp": "true",
                     "fields": [
                         {
                             "name": "1. Each of you receive a target.",
@@ -94,7 +95,8 @@
                 {
                     "color": "0x11ff11",
                     "title": "ya98dsahjhj",
-                    "description": "desc"
+                    "description": "desc",
+                    "timestamp": "false"
                 }
             ]
         },
@@ -130,7 +132,15 @@
                     "preset": "default-text"
                 }
             ],
-            "default_message": "voting"
+            "default_message": "",
+            "embeds": [
+                {
+                    "color": "0x11ff11",
+                    "title": "Voting",
+                    "description": "desc",
+                    "timestamp": "false"
+                }
+            ]
         },
         {
             "abv": "duel",
@@ -147,7 +157,14 @@
                     "preset": "default-text"
                 }
             ],
-            "default_message": "for duel information, check out rules"
+            "default_message": "",
+            "embeds": [
+                {
+                    "color": "0x11ff11",
+                    "title": "Duels",
+                    "description": "desc"
+                }
+            ]
         },
         {
             "abv": "genText",
