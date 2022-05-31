@@ -25,8 +25,16 @@ for (const file of commandFiles) {
     });
 }
 
-let guildsData;
-let channelData;
+let guildsData, channelData, permissionData, roleData;
+
+const filePaths = 
+{
+    guilds: './data/guilds.json',
+    channels: './setup/channel-structure.json',
+    permissions: './setup/permission-presets.json',
+    roles: './setup/role-presets.json'
+}
+
 
 
 client.on("ready", async () => {
@@ -37,18 +45,28 @@ client.on("ready", async () => {
 
     // read files
     await printDebug('Reading json files');
-    fs.readFile('./data/guilds.json', 'utf-8', (err, data) => {
+    fs.readFile(filePaths.guilds, 'utf-8', (err, data) => {
         if (err) throw err;
         guildsData = JSON.parse(data.toString());
-        printDebug('\tRead from ./data/guilds.json');
+        printDebug('\tRead from ' + filePaths.guilds);
     });
-    fs.readFile('channel-structure.json', 'utf-8', (err, data) => {
+    fs.readFile(filePaths.channels, 'utf-8', (err, data) => {
         if (err) throw err;
         channelData = JSON.parse(data.toString());
-        printDebug('\tRead from channel-structure.json');
+        printDebug('\tRead from ' + filePaths.channels);
+    });
+    fs.readFile(filePaths.permissions, 'utf-8', (err, data) => {
+        if (err) throw err;
+        permissionData = JSON.parse(data.toString());
+        printDebug('\tRead from ' + filePaths.permissions);
+    });
+    fs.readFile(filePaths.roles, 'utf-8', (err, data) => {
+        if (err) throw err;
+        roleData = JSON.parse(data.toString());
+        printDebug('\tRead from ' + filePaths.roles);
     });
     
-    // register slash commands
+    // register slash commands to every guild that bot is in
 	client.guilds.fetch().then((guilds) => {
         printDebug('Registering slash commands to all known guilds.');
         let idx = 0;
@@ -60,12 +78,13 @@ client.on("ready", async () => {
 });
 
 client.on("guildCreate", async (guild) => {
-    // register slash commands
+    // register slash commands to guild that adds bot
     await printDebug('\tRegistering guild: ' + guild.name + ' (' + guild.id + ')');
     registerCommands(guild.id);
 });
 
 client.on("messageCreate", async (msg) => {
+    // for message detected commands (depreciated)
     const txt = msg.content;
     if (!txt.startsWith('~')) return;
     else if (txt === '~reset') {
@@ -100,13 +119,13 @@ client.on('interactionCreate', async interaction => {
             await printDebug('-> command triggered: ' + command.data.name);
             switch (command.data.name) {
                 case 'delete':
-                    await command.execute(interaction, guildsData, client);
+                    await command.execute(interaction, client, guildsData);
                     break;
                 case 'init':
-                    await command.execute(interaction, guildsData, channelData);
+                    await command.execute(interaction, { guildsData, channelData, permissionData, roleData });
                     break;
                 case 'reset':
-                    await command.execute(interaction, guildsData, client, channelData);
+                    await command.execute(interaction, client, { guildsData, channelData, permissionData, roleData });
                     break;
                 default:
                     await command.execute(interaction);

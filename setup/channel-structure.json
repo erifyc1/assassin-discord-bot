@@ -2,7 +2,16 @@
     "category": {
         "name": "Cyclic Assassin Game",
         "type": "GUILD_CATEGORY",
-        "permissions": "default-category"
+        "permissions": [
+            {
+                "roleName": "observer",
+                "preset": "observer-text"
+            },
+            {
+                "roleName": "standard",
+                "preset": "default-text"
+            }
+        ]
     },
     "channels": [
         {
@@ -10,7 +19,16 @@
             "name": "⌛-how-to-play",
             "type": "GUILD_TEXT",
             "topic": "Want to know what Cyclic is all about? You've come to the right place.",
-            "permissions": "default-text",
+            "permissions": [
+                {
+                    "roleName": "observer",
+                    "preset": "observer-text"
+                },
+                {
+                    "roleName": "standard",
+                    "preset": "default-text"
+                }
+            ],
             "default_message": "",
             "embeds": [
                 {
@@ -61,15 +79,40 @@
             "name": "📋-rules",
             "type": "GUILD_TEXT",
             "topic": "Full information on the rules of the active Cyclic game.",
-            "permissions": "default-text",
-            "default_message": "rules"
+            "permissions": [
+                {
+                    "roleName": "observer",
+                    "preset": "observer-text"
+                },
+                {
+                    "roleName": "standard",
+                    "preset": "default-text"
+                }
+            ],
+            "default_message": "",
+            "embeds": [
+                {
+                    "color": "0x11ff11",
+                    "title": "ya98dsahjhj",
+                    "description": "desc"
+                }
+            ]
         },
         {
             "abv": "announcement",
             "name": "📣-announcements",
             "type": "GUILD_TEXT",
             "topic": "Announcements about the active Cyclic game are here!",
-            "permissions": "default-text",
+            "permissions": [
+                {
+                    "roleName": "observer",
+                    "preset": "observer-text"
+                },
+                {
+                    "roleName": "standard",
+                    "preset": "default-text"
+                }
+            ],
             "default_message": ""
         },
         {
@@ -77,7 +120,16 @@
             "name": "👍-voting",
             "type": "GUILD_TEXT",
             "topic": "Vote on various proposals.",
-            "permissions": "default-text",
+            "permissions": [
+                {
+                    "roleName": "observer",
+                    "preset": "observer-text"
+                },
+                {
+                    "roleName": "standard",
+                    "preset": "default-text"
+                }
+            ],
             "default_message": "voting"
         },
         {
@@ -85,7 +137,16 @@
             "name": "🔪-duel",
             "type": "GUILD_TEXT",
             "topic": "Discuss duels with other players and moderators.",
-            "permissions": "default-text",
+            "permissions": [
+                {
+                    "roleName": "observer",
+                    "preset": "observer-text"
+                },
+                {
+                    "roleName": "standard",
+                    "preset": "default-text"
+                }
+            ],
             "default_message": "for duel information, check out rules"
         },
         {
@@ -93,7 +154,16 @@
             "name": "🎤-general",
             "type": "GUILD_TEXT",
             "topic": "The channel to have game related or casual conversation.",
-            "permissions": "default-text",
+            "permissions": [
+                {
+                    "roleName": "observer",
+                    "preset": "observer-text"
+                },
+                {
+                    "roleName": "standard",
+                    "preset": "default-text"
+                }
+            ],
             "default_message": "https://giphy.com/gifs/reaction-l36kU80xPf0ojG0Erg"
         },
         {
@@ -101,93 +171,16 @@
             "name": "📞-voice",
             "type": "GUILD_VOICE",
             "topic": "The channel to have game related or casual conversation.",
-            "permissions": "default-voice"
-        }
-    ],
-    "permissionPresets": {
-        "default-text": {
-            "allow": [
-                "VIEW_CHANNEL",
-                "CREATE_INSTANT_INVITE",
-                "SEND_MESSAGES",
-                "SEND_MESSAGES_IN_THREADS",
-                "EMBED_LINKS",
-                "ATTACH_FILES",
-                "ADD_REACTIONS",
-                "USE_EXTERNAL_EMOJIS",
-                "USE_EXTERNAL_STICKERS",
-                "READ_MESSAGE_HISTORY",
-                "USE_APPLICATION_COMMANDS"
-            ],
-            "deny": [
-                "MANAGE_CHANNELS",
-                "MANAGE_WEBHOOKS",
-                "CREATE_PUBLIC_THREADS",
-                "CREATE_PRIVATE_THREADS",
-                "MENTION_EVERYONE",
-                "MANAGE_MESSAGES",
-                "MANAGE_THREADS",
-                "SEND_TTS_MESSAGES"
-            ]
-        },
-        "default-voice": {
-            "allow": [
-                "VIEW_CHANNEL",
-                "CREATE_INSTANT_INVITE",
-                "CONNECT",
-                "SPEAK",
-                "STREAM",
-                "SEND_MESSAGES",
-                "EMBED_LINKS",
-                "ATTACH_FILES",
-                "ADD_REACTIONS",
-                "USE_EXTERNAL_EMOJIS",
-                "USE_EXTERNAL_STICKERS",
-                "READ_MESSAGE_HISTORY",
-                "USE_APPLICATION_COMMANDS"
-            ],
-            "deny": [
-                "MANAGE_CHANNELS",
-                "MUTE_MEMBERS",
-                "DEAFEN_MEMBERS",
-                "MOVE_MEMBERS",
-                "MANAGE_EVENTS",
-                "MENTION_EVERYONE",
-                "MANAGE_MESSAGES",
-                "SEND_TTS_MESSAGES"
-            ]
-        },
-        "default-category": {
-            "allow": [
-                "VIEW_CHANNEL",
-                "CREATE_INSTANT_INVITE",
-                "CONNECT",
-                "SPEAK",
-                "STREAM",
-                "SEND_MESSAGES",
-                "EMBED_LINKS",
-                "ATTACH_FILES",
-                "ADD_REACTIONS",
-                "USE_EXTERNAL_EMOJIS",
-                "USE_EXTERNAL_STICKERS",
-                "READ_MESSAGE_HISTORY",
-                "USE_APPLICATION_COMMANDS",
-                "SEND_MESSAGES_IN_THREADS"
-            ],
-            "deny": [
-                "MANAGE_CHANNELS",
-                "MUTE_MEMBERS",
-                "DEAFEN_MEMBERS",
-                "MOVE_MEMBERS",
-                "MANAGE_EVENTS",
-                "MENTION_EVERYONE",
-                "MANAGE_MESSAGES",
-                "MANAGE_WEBHOOKS",
-                "CREATE_PUBLIC_THREADS",
-                "CREATE_PRIVATE_THREADS",
-                "MANAGE_THREADS",
-                "SEND_TTS_MESSAGES"
+            "permissions": [
+                {
+                    "roleName": "observer",
+                    "preset": "observer-voice"
+                },
+                {
+                    "roleName": "standard",
+                    "preset": "default-voice"
+                }
             ]
         }
-    }
+    ]
 }

@@ -6,53 +6,40 @@ export const data = new SlashCommandBuilder()
     .setName('init')
     .setDescription('Initializes the game by generating the channel structure.');
     
-export async function execute(interaction, guildsData, channelData) {
+export async function execute(interaction, setupData) {
     if (!interaction.replied && !interaction.deferred) await interaction.deferReply();
-    if (generated(guildsData, interaction.guild.id)) {
-        if (interaction.deferred) interaction.editReply('Failed to initialize channels, channels have already been initialized.');
+    if (generated(setupData.guildsData, interaction.guild.id)) {
+        if (interaction.deferred) interaction.editReply('Failed to initialize channels and roles, server has already been initialized.');
     }
     else {
-        const currentGuild = await generateChannels(guildsData, channelData, interaction.guild);
-        guildsData.guilds.push(currentGuild);
-        updateJson(guildsData);
-        if (interaction.deferred) interaction.editReply('Channels initialized successfully.');
+        // under construction
+        const currentGuild = await generateGuild(setupData, interaction.guild);
+        setupData.guildsData.guilds.push(currentGuild);
+        updateJson(setupData.guildsData);
+        if (interaction.deferred) interaction.editReply('Game channels and roles initialized successfully.');
     }
 };
 
-async function generateChannels(guildsData, channelData, guild) {
+// generates channels required to run the game, make sure roles are generated first
+async function generateChannels(channelData, permissionData, roles, guild, categoryID) {
+    const channels = {};
 
-    const category = await guild.channels.create(channelData.category.name, { 
-        type: channelData.category.type,
-        permissionOverwrites: [
-            {
-                id: guild.id,
-                allow: channelData.permissionPresets[channelData.category.permissions].allow,
-                deny: channelData.permissionPresets[channelData.category.permissions].deny
-            }
-        ]
-    })
-    .catch(console.error);
-    const guildData = {
-        id: guildsData.guilds.length, 
-        guildID: guild.id,
-        categoryID: category.id,
-        channels: {}
-    }
-    for (const channel of channelData.channels) {
+    // generate each channel
+    for (const channel of channelData) {
         let guildChannel = await guild.channels.create(channel.name, { 
             type: channel.type,
-            permissionOverwrites: [
-                {
-                    id: guild.id,
-                    allow: channelData.permissionPresets[channel.permissions].allow,
-                    deny: channelData.permissionPresets[channel.permissions].deny
+            permissionOverwrites: channel.permissions.map((roleObj) => {
+                return {
+                    id: roles[roleObj.roleName],
+                    allow: permissionData[roleObj.preset].allow,
+                    deny: permissionData[roleObj.preset].deny
                 }
-            ]
+            })
         })
         .catch(console.error);
-        guildChannel.setParent(category.id);
-        guildData.channels[channel.abv] = guildChannel.id;
-
+        guildChannel.setParent(categoryID);
+        channels[channel.abv] = guildChannel.id;
+        // send default message, button, and/or embed
         if (channel.type === 'GUILD_TEXT') {
             if (channel.default_message !== "") {
                 guildChannel.send(channel.default_message);
@@ -70,7 +57,24 @@ async function generateChannels(guildsData, channelData, guild) {
             }
         }
     }
-    return guildData;
+    return channels;
+}
+
+
+async function generateCategory(categoryData, permissionData, roles, guild) {
+    // generate category
+    const category = await guild.channels.create(categoryData.name, { 
+        type: categoryData.type,
+        permissionOverwrites: categoryData.permissions.map((roleObj) => {
+            return {
+                id: roles[roleObj.roleName],
+                allow: permissionData[roleObj.preset].allow,
+                deny: permissionData[roleObj.preset].deny
+            }
+        })
+    })
+    .catch(console.error);
+    return category;
 }
 
 
@@ -84,14 +88,14 @@ async function makeEmbed(embedData) {
 	.setTitle(embedData.title)
 	.setColor(embedData.color)
 	.setDescription(embedData.description);
-
+    
 	if (embedData.url) embed.setURL(embedData.url);
     if (embedData.author) embed.setAuthor(embedData.author);
 	if (embedData.thumbnail && embedData.thumbnail.url) embed.setThumbnail(embedData.thumbnail.url);
     if (embedData.fields) embed.addFields(embedData.fields);
     if (embedData.image && embedData.image.url) embed.setImage(embedData.image.url)
 	if (embedData.footer) embed.setFooter(embedData.footer);
-
+    
     embed.setTimestamp()
     return embed;
 }
@@ -102,6 +106,39 @@ async function makeButton(buttonData) {
     .setStyle(buttonData.style)
     .setCustomId(buttonData.customId)
     .setLabel(buttonData.label);
-
+    
     return button;
+}
+
+async function generateRoles(roleData, guild) {
+    const roles = {};
+    for (const role of roleData.roles) {
+        const r = await guild.roles.create({
+            name: role.name,
+            color: role.color,
+            reason: 'Created for use in Cyclic Assassin!'
+        });
+        roles[role.abv] = r.id;
+    }
+    return roles;
+}
+
+async function generateGuild(setupData, guild) {
+    const { guildsData, channelData, permissionData, roleData } = setupData;
+    // set up guildData object
+    const guildData = {
+        id: setupData.guildsData.guilds.length, 
+        guildID: guild.id,
+        categoryID: -1,
+        channels: {},
+        roles: {}
+    };
+    // generate roles first, because channel permissions depend on existence
+    guildData.roles = await generateRoles(roleData, guild);
+
+    // generate category, then channels
+    const category = await generateCategory(channelData.category, permissionData, guildData.roles, guild);
+    guildData.categoryID = category.id;
+    guildData.channels = await generateChannels(channelData.channels, permissionData, guildData.roles, guild, category.id);
+    return guildData;
 }

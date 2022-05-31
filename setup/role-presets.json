@@ -1,0 +1,14 @@
+{
+    "roles": [
+        {
+            "abv": "observer",
+            "name": "Cyclic Assassin Observer",
+            "color": "0x111111"
+        },
+        {
+            "abv": "standard",
+            "name": "Standard",
+            "color": "0xff1111"
+        }
+    ]
+}

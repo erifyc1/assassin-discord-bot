@@ -5,7 +5,7 @@ export const data = new SlashCommandBuilder()
     .setName('delete')
     .setDescription('Removes all game-related channels and messages.');
     
-export async function execute(interaction, guildsData, client) {
+export async function execute(interaction, client, guildsData) {
     if (!interaction.replied && !interaction.deferred) await interaction.deferReply();
     if (generated(guildsData, interaction.guild.id)) {
         const idx = guildsData.guilds.findIndex((elem) => elem.guildID === interaction.guild.id);
@@ -16,12 +16,18 @@ export async function execute(interaction, guildsData, client) {
             category.children.mapValues(V => V.delete());
             category.delete();
         }
+        for (let [key, value] of Object.entries(guildsData.guilds[idx].roles)) {
+            if (await interaction.guild.roles.fetch(value)) {
+                await interaction.guild.roles.delete(value, 'Deleted Cyclic Assassin role.');
+            }
+        }
+
         guildsData.guilds = guildsData.guilds.filter((elem) => elem.guildID != interaction.guild.id);
         updateJson(guildsData);
-        if (interaction.deferred) interaction.editReply('Channels deleted successfully.');
+        if (interaction.deferred) interaction.editReply('Game channels and roles deleted successfully.');
     }
     else {
-        if (interaction.deferred) interaction.editReply('Cannot delete channels, channels not detected.')
+        if (interaction.deferred) interaction.editReply('Cannot delete channels and roles, main category not detected.')
     }
 };
 

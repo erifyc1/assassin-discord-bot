@@ -1,0 +1,170 @@
+{
+    "default-text": {
+        "allow": [
+            "VIEW_CHANNEL",
+            "CREATE_INSTANT_INVITE",
+            "SEND_MESSAGES",
+            "SEND_MESSAGES_IN_THREADS",
+            "EMBED_LINKS",
+            "ATTACH_FILES",
+            "ADD_REACTIONS",
+            "USE_EXTERNAL_EMOJIS",
+            "USE_EXTERNAL_STICKERS",
+            "READ_MESSAGE_HISTORY",
+            "USE_APPLICATION_COMMANDS"
+        ],
+        "deny": [
+            "MANAGE_CHANNELS",
+            "MANAGE_WEBHOOKS",
+            "CREATE_PUBLIC_THREADS",
+            "CREATE_PRIVATE_THREADS",
+            "MENTION_EVERYONE",
+            "MANAGE_MESSAGES",
+            "MANAGE_THREADS",
+            "SEND_TTS_MESSAGES"
+        ]
+    },
+    "default-voice": {
+        "allow": [
+            "VIEW_CHANNEL",
+            "CREATE_INSTANT_INVITE",
+            "CONNECT",
+            "SPEAK",
+            "STREAM",
+            "SEND_MESSAGES",
+            "EMBED_LINKS",
+            "ATTACH_FILES",
+            "ADD_REACTIONS",
+            "USE_EXTERNAL_EMOJIS",
+            "USE_EXTERNAL_STICKERS",
+            "READ_MESSAGE_HISTORY",
+            "USE_APPLICATION_COMMANDS"
+        ],
+        "deny": [
+            "MANAGE_CHANNELS",
+            "MUTE_MEMBERS",
+            "DEAFEN_MEMBERS",
+            "MOVE_MEMBERS",
+            "MANAGE_EVENTS",
+            "MENTION_EVERYONE",
+            "MANAGE_MESSAGES",
+            "SEND_TTS_MESSAGES"
+        ]
+    },
+    "default-category": {
+        "allow": [
+            "VIEW_CHANNEL",
+            "CREATE_INSTANT_INVITE",
+            "CONNECT",
+            "SPEAK",
+            "STREAM",
+            "SEND_MESSAGES",
+            "EMBED_LINKS",
+            "ATTACH_FILES",
+            "ADD_REACTIONS",
+            "USE_EXTERNAL_EMOJIS",
+            "USE_EXTERNAL_STICKERS",
+            "READ_MESSAGE_HISTORY",
+            "USE_APPLICATION_COMMANDS",
+            "SEND_MESSAGES_IN_THREADS"
+        ],
+        "deny": [
+            "MANAGE_CHANNELS",
+            "MUTE_MEMBERS",
+            "DEAFEN_MEMBERS",
+            "MOVE_MEMBERS",
+            "MANAGE_EVENTS",
+            "MENTION_EVERYONE",
+            "MANAGE_MESSAGES",
+            "MANAGE_WEBHOOKS",
+            "CREATE_PUBLIC_THREADS",
+            "CREATE_PRIVATE_THREADS",
+            "MANAGE_THREADS",
+            "SEND_TTS_MESSAGES"
+        ]
+    },
+    "observer-text": {
+        "allow": [
+            "VIEW_CHANNEL",
+            "CREATE_INSTANT_INVITE"
+        ],
+        "deny": [
+            "SEND_MESSAGES",
+            "SEND_MESSAGES_IN_THREADS",
+            "EMBED_LINKS",
+            "ATTACH_FILES",
+            "ADD_REACTIONS",
+            "USE_EXTERNAL_EMOJIS",
+            "USE_EXTERNAL_STICKERS",
+            "READ_MESSAGE_HISTORY",
+            "USE_APPLICATION_COMMANDS",
+            "MANAGE_CHANNELS",
+            "MANAGE_WEBHOOKS",
+            "CREATE_PUBLIC_THREADS",
+            "CREATE_PRIVATE_THREADS",
+            "MENTION_EVERYONE",
+            "MANAGE_MESSAGES",
+            "MANAGE_THREADS",
+            "SEND_TTS_MESSAGES"
+        ]
+    },
+    "observer-voice": {
+        "allow": [
+            "VIEW_CHANNEL",
+            "CREATE_INSTANT_INVITE"
+        ],
+        "deny": [
+            "CONNECT",
+            "SPEAK",
+            "STREAM",
+            "SEND_MESSAGES",
+            "EMBED_LINKS",
+            "ATTACH_FILES",
+            "ADD_REACTIONS",
+            "USE_EXTERNAL_EMOJIS",
+            "USE_EXTERNAL_STICKERS",
+            "READ_MESSAGE_HISTORY",
+            "USE_APPLICATION_COMMANDS",
+            "MANAGE_CHANNELS",
+            "MUTE_MEMBERS",
+            "DEAFEN_MEMBERS",
+            "MOVE_MEMBERS",
+            "MANAGE_EVENTS",
+            "MENTION_EVERYONE",
+            "MANAGE_MESSAGES",
+            "SEND_TTS_MESSAGES"
+        ]
+    },
+    "observer-category": {
+        "allow": [
+            "VIEW_CHANNEL",
+            "CREATE_INSTANT_INVITE"
+        ],
+        "deny": [
+            "CONNECT",
+            "SPEAK",
+            "STREAM",
+            "SEND_MESSAGES",
+            "EMBED_LINKS",
+            "ATTACH_FILES",
+            "ADD_REACTIONS",
+            "USE_EXTERNAL_EMOJIS",
+            "USE_EXTERNAL_STICKERS",
+            "READ_MESSAGE_HISTORY",
+            "USE_APPLICATION_COMMANDS",
+            "SEND_MESSAGES_IN_THREADS",
+            "MANAGE_CHANNELS",
+            "MUTE_MEMBERS",
+            "DEAFEN_MEMBERS",
+            "MOVE_MEMBERS",
+            "MANAGE_EVENTS",
+            "MENTION_EVERYONE",
+            "MANAGE_MESSAGES",
+            "MANAGE_WEBHOOKS",
+            "CREATE_PUBLIC_THREADS",
+            "CREATE_PRIVATE_THREADS",
+            "MANAGE_THREADS",
+            "SEND_TTS_MESSAGES"
+        ]
+    }
+}
