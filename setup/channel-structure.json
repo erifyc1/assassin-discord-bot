@@ -5,11 +5,19 @@
         "permissions": [
             {
                 "roleName": "observer",
-                "preset": "observer-text"
+                "preset": "viewonly-category"
             },
             {
-                "roleName": "standard",
-                "preset": "default-text"
+                "roleName": "@everyone",
+                "preset": "viewonly-category"
+            },
+            {
+                "roleName": "player",
+                "preset": "default-category"
+            },
+            {
+                "roleName": "admin",
+                "preset": "admin-category"
             }
         ]
     },
@@ -22,11 +30,19 @@
             "permissions": [
                 {
                     "roleName": "observer",
-                    "preset": "observer-text"
+                    "preset": "viewonly-text"
                 },
                 {
-                    "roleName": "standard",
-                    "preset": "default-text"
+                    "roleName": "@everyone",
+                    "preset": "viewonly-text"
+                },
+                {
+                    "roleName": "player",
+                    "preset": "viewonly-text"
+                },
+                {
+                    "roleName": "admin",
+                    "preset": "admin-text"
                 }
             ],
             "default_message": "",
@@ -83,20 +99,83 @@
             "permissions": [
                 {
                     "roleName": "observer",
-                    "preset": "observer-text"
+                    "preset": "viewonly-text"
                 },
                 {
-                    "roleName": "standard",
-                    "preset": "default-text"
+                    "roleName": "@everyone",
+                    "preset": "viewonly-text"
+                },
+                {
+                    "roleName": "player",
+                    "preset": "viewonly-text"
+                },
+                {
+                    "roleName": "admin",
+                    "preset": "admin-text"
                 }
             ],
             "default_message": "",
             "embeds": [
                 {
-                    "color": "0x11ff11",
-                    "title": "ya98dsahjhj",
-                    "description": "desc",
-                    "timestamp": "false"
+                    "color": "0xffff11",
+                    "title": "Kill Methods Information",
+                    "description": "How you can eliminate other players from the game.\n\u2800",
+                    "timestamp": "false",
+                    "fields": [
+                        {
+                            "name": "1. Choose a kill method from the kill methods list below",
+                            "value": "New kill methods could be introduced or removed later, so ensure you check the list! (it's timestamped)\n\u2800",
+                            "inline": "false"
+                        },
+                        {
+                            "name": "2. Perform the necessary specification while recording a video and all events should be in one video.",
+                            "value": "Make sure this video includes proof that it is you recording.\n\u2800",
+                            "inline": "false"
+                        },
+                        {
+                            "name": "3. Confirm your kill/death on the website! *http://www.cyclic.games/*",
+                            "value": "Make sure BOTH parties confirm the kill (Assassin and target)\n\u2800",
+                            "inline": "false"
+                        },
+                        {
+                            "name": "4. Follow the directions for the kill **exactly**. ",
+                            "value": "Violating any part of the instructions for a kill method could result in the kill being invalid.\n\u2800",
+                            "inline": "false"
+                        }
+                    ]
+                },
+                {
+                    "color": "0xdd2211",
+                    "title": "Kill Methods List",
+                    "description": "**Safe Zones:**\nYou cannot be assassinated while sleeping or be woken up to be assassinated\nThe bathroom nearest to your dorm room or apartment is a safe zone\n\u2800",
+                    "timestamp": "true",
+                    "fields": [
+                        {
+                            "name": "1. Doorway Trapped",
+                            "value": "Record your target opening, entering, and closing a door without them noticing you from a distance of at most 10 feet.\n\u2800",
+                            "inline": "false"
+                        },
+                        {
+                            "name": "2. Midnight Detonation",
+                            "value": "Record yourself entering your target's dorm room or apartment and placing a piece of paper labeled \"bomb\" on their pillow.\nYou can only enter their room if given explicit permission and someone is in the room.\nMake sure to record the room number as proof that this is indeed their room.\n\u2800",
+                            "inline": "false"
+                        },
+                        {
+                            "name": "3. Food Poisoning",
+                            "value": "Place a piece of paper labeled \"cyanide\" under your target's food plate (while taking video).\nYour target is assassinated if they take a bite before noticing. \n\u2800",
+                            "inline": "false"
+                        },
+                        {
+                            "name": "4. Identity Theft",
+                            "value": "Record a video of your target's I-Card or other photo ID next to your I-Card or other photo ID.\nModerators must be able to recognize both faces and names on the cards. \n\u2800",
+                            "inline": "false"
+                        },
+                        {
+                            "name": "5. Duel",
+                            "value": "You and another player that is not necessarily your target can choose to challenge each other to a duel with any rules of your choice.\n For more information, check out the #🔪-duel channel!\n\u2800",
+                            "inline": "false"
+                        }
+                    ]
                 }
             ]
         },
@@ -108,11 +187,19 @@
             "permissions": [
                 {
                     "roleName": "observer",
-                    "preset": "observer-text"
+                    "preset": "viewonly-text"
                 },
                 {
-                    "roleName": "standard",
-                    "preset": "default-text"
+                    "roleName": "@everyone",
+                    "preset": "permissionless-text"
+                },
+                {
+                    "roleName": "player",
+                    "preset": "viewonly-text"
+                },
+                {
+                    "roleName": "admin",
+                    "preset": "admin-text"
                 }
             ],
             "default_message": ""
@@ -125,11 +212,19 @@
             "permissions": [
                 {
                     "roleName": "observer",
-                    "preset": "observer-text"
+                    "preset": "viewonly-text"
                 },
                 {
-                    "roleName": "standard",
+                    "roleName": "@everyone",
+                    "preset": "permissionless-text"
+                },
+                {
+                    "roleName": "player",
                     "preset": "default-text"
+                },
+                {
+                    "roleName": "admin",
+                    "preset": "admin-text"
                 }
             ],
             "default_message": "",
@@ -150,19 +245,44 @@
             "permissions": [
                 {
                     "roleName": "observer",
-                    "preset": "observer-text"
+                    "preset": "viewonly-text"
                 },
                 {
-                    "roleName": "standard",
+                    "roleName": "@everyone",
+                    "preset": "permissionless-text"
+                },
+                {
+                    "roleName": "player",
                     "preset": "default-text"
+                },
+                {
+                    "roleName": "admin",
+                    "preset": "admin-text"
                 }
             ],
             "default_message": "",
             "embeds": [
                 {
-                    "color": "0x11ff11",
+                    "color": "0x001111",
                     "title": "Duels",
-                    "description": "desc"
+                    "description": "Duels are a special way to break stalemates and get around traditional kill methods in Cyclic Games Assassin.\n\u2800 ",
+                    "fields":[
+                        {
+                            "name": "1. Challenge someone to a duel",
+                            "value": "You and any other living player in the game can choose to challenge each other to a duel with any rules of your choice.\nAny rules are fair game, as long as you both agree to them.\n\u2800",
+                            "inline": "false"
+                        },
+                        {
+                            "name": "2. Play out the duel with moderator supervision or record the event",
+                            "value": "Whoever wins the duel, by the judgment of the chosen moderator, will assassinate the other player (but will not gain the assassinated player's target if they didn't have them as a target when the duel started).\n\u2800",
+                            "inline": "false"
+                        },
+                        {
+                            "name": "3. Use this channel to coordinate",
+                            "value": "Make sure you have proof of both parties agreeing to the terms of the duel.\n\u2800",
+                            "inline": "false"
+                        }
+                    ]
                 }
             ]
         },
@@ -174,14 +294,22 @@
             "permissions": [
                 {
                     "roleName": "observer",
-                    "preset": "observer-text"
+                    "preset": "default-text"
                 },
                 {
-                    "roleName": "standard",
+                    "roleName": "@everyone",
+                    "preset": "viewonly-text"
+                },
+                {
+                    "roleName": "player",
                     "preset": "default-text"
+                },
+                {
+                    "roleName": "admin",
+                    "preset": "admin-text"
                 }
             ],
-            "default_message": "https://giphy.com/gifs/reaction-l36kU80xPf0ojG0Erg"
+            "default_message": "Typical Assassin player trying to figure out their killer.\nhttps://giphy.com/gifs/reaction-l36kU80xPf0ojG0Erg"
         },
         {
             "abv": "genVoice",
@@ -191,11 +319,19 @@
             "permissions": [
                 {
                     "roleName": "observer",
-                    "preset": "observer-voice"
+                    "preset": "default-voice"
                 },
                 {
-                    "roleName": "standard",
+                    "roleName": "@everyone",
+                    "preset": "viewonly-voice"
+                },
+                {
+                    "roleName": "player",
                     "preset": "default-voice"
+                },
+                {
+                    "roleName": "admin",
+                    "preset": "admin-voice"
                 }
             ]
         }

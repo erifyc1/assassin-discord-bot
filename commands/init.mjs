@@ -30,7 +30,7 @@ async function generateChannels(channelData, permissionData, roles, guild, categ
             type: channel.type,
             permissionOverwrites: channel.permissions.map((roleObj) => {
                 return {
-                    id: roles[roleObj.roleName],
+                    id: roleObj.roleName === '@everyone' ? guild.id : roles[roleObj.roleName],
                     allow: permissionData[roleObj.preset].allow,
                     deny: permissionData[roleObj.preset].deny
                 }
@@ -66,8 +66,9 @@ async function generateCategory(categoryData, permissionData, roles, guild) {
     const category = await guild.channels.create(categoryData.name, { 
         type: categoryData.type,
         permissionOverwrites: categoryData.permissions.map((roleObj) => {
+            console.log(roleObj.roleName);
             return {
-                id: roles[roleObj.roleName],
+                id: roleObj.roleName === '@everyone' ? guild.id : roles[roleObj.roleName],
                 allow: permissionData[roleObj.preset].allow,
                 deny: permissionData[roleObj.preset].deny
             }

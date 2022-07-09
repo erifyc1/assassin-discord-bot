@@ -6,8 +6,13 @@
             "color": "0x111111"
         },
         {
-            "abv": "standard",
-            "name": "Standard",
+            "abv": "player",
+            "name": "Cyclic Assassin Player",
+            "color": "0x1111ff"
+        },
+        {
+            "abv": "admin",
+            "name": "Cyclic Assassin Admin",
             "color": "0xff1111"
         }
     ]
