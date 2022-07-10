@@ -132,6 +132,8 @@ async function generateGuild(setupData, guild) {
     const guildData = {
         id: setupData.guildsData.guilds.length, 
         guildID: guild.id,
+        linkedGameID: '',
+        apiToken: '',
         categoryID: -1,
         channels: {},
         roles: {}

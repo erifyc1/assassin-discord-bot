@@ -100,7 +100,7 @@ client.on("messageCreate", async (msg) => {
         });
         const data = await res.json();
         msg.reply(data.token);
-        const res2 = await fetch('http://www.cyclic.games/getTarget/4', {
+        const res2 = await fetch('http://www.cyclic.games/getLeaderboard/5'/*'http://www.cyclic.games/getTarget/4'*/, {
             method: 'get',
             headers: { 'Authorization': ('Token ' + data.token) }
         });
@@ -126,6 +126,9 @@ client.on('interactionCreate', async interaction => {
                     break;
                 case 'reset':
                     await command.execute(interaction, client, { guildsData, channelData, permissionData, roleData });
+                    break;
+                case 'link':
+                    await command.execute(interaction, guildsData);
                     break;
                 default:
                     await command.execute(interaction);
