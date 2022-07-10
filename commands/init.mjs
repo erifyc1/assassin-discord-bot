@@ -11,12 +11,15 @@ export async function execute(interaction, setupData) {
     if (generated(setupData.guildsData, interaction.guild.id)) {
         if (interaction.deferred) interaction.editReply('Failed to initialize channels and roles, server has already been initialized.');
     }
-    else {
+    else if (interaction.member.permissionsIn(interaction.channel).has("ADMINISTRATOR")) {
         // under construction
         const currentGuild = await generateGuild(setupData, interaction.guild);
         setupData.guildsData.guilds.push(currentGuild);
         updateJson(setupData.guildsData);
         if (interaction.deferred) interaction.editReply('Game channels and roles initialized successfully.');
+    }
+    else {
+        interaction.editReply('Only admins can use this command!');
     }
 };
 

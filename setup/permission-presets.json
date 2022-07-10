@@ -86,6 +86,7 @@
     "viewonly-text": {
         "allow": [
             "VIEW_CHANNEL",
+            "READ_MESSAGE_HISTORY",
             "CREATE_INSTANT_INVITE"
         ],
         "deny": [
@@ -96,7 +97,6 @@
             "ADD_REACTIONS",
             "USE_EXTERNAL_EMOJIS",
             "USE_EXTERNAL_STICKERS",
-            "READ_MESSAGE_HISTORY",
             "USE_APPLICATION_COMMANDS",
             "MANAGE_CHANNELS",
             "MANAGE_WEBHOOKS",
@@ -111,6 +111,7 @@
     "viewonly-voice": {
         "allow": [
             "VIEW_CHANNEL",
+            "READ_MESSAGE_HISTORY",
             "CREATE_INSTANT_INVITE"
         ],
         "deny": [
@@ -123,7 +124,6 @@
             "ADD_REACTIONS",
             "USE_EXTERNAL_EMOJIS",
             "USE_EXTERNAL_STICKERS",
-            "READ_MESSAGE_HISTORY",
             "USE_APPLICATION_COMMANDS",
             "MANAGE_CHANNELS",
             "MUTE_MEMBERS",
@@ -138,6 +138,7 @@
     "viewonly-category": {
         "allow": [
             "VIEW_CHANNEL",
+            "READ_MESSAGE_HISTORY",
             "CREATE_INSTANT_INVITE"
         ],
         "deny": [
@@ -150,7 +151,6 @@
             "ADD_REACTIONS",
             "USE_EXTERNAL_EMOJIS",
             "USE_EXTERNAL_STICKERS",
-            "READ_MESSAGE_HISTORY",
             "USE_APPLICATION_COMMANDS",
             "SEND_MESSAGES_IN_THREADS",
             "MANAGE_CHANNELS",

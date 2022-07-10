@@ -39,8 +39,8 @@ const filePaths =
 
 client.on("ready", async () => {
     // set up bot
-    await printDebug('\n\n--------------------------');
-    await printDebug(`Booted bot instance ${client.user.tag}`);
+    await printDebug('--------------------------');
+    await printDebug(`Booted bot instance: ${client.user.tag}`);
     client.user.setActivity('cyclic.games', { type: 'COMPETING' });
 
     // read files

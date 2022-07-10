@@ -13,7 +13,7 @@
             },
             {
                 "roleName": "player",
-                "preset": "default-category"
+                "preset": "viewonly-category"
             },
             {
                 "roleName": "admin",
@@ -22,6 +22,31 @@
         ]
     },
     "channels": [
+        {
+            "abv": "admin",
+            "name": "🎮-admin-control",
+            "type": "GUILD_TEXT",
+            "topic": "Admins can control aspects of the game from here. Make sure they have the special Admin role or have the 'administrator' permission!",
+            "permissions": [
+                {
+                    "roleName": "observer",
+                    "preset": "permissionless-text"
+                },
+                {
+                    "roleName": "@everyone",
+                    "preset": "permissionless-text"
+                },
+                {
+                    "roleName": "player",
+                    "preset": "permissionless-text"
+                },
+                {
+                    "roleName": "admin",
+                    "preset": "admin-text"
+                }
+            ],
+            "default_message": ""
+        },
         {
             "abv": "howtoplay",
             "name": "⌛-how-to-play",
@@ -80,8 +105,8 @@
                         }
                     ],
                     "footer": {
-                        "text": "Assassin by Cyclic.games",
-                        "icon_url": "https://i.imgur.com/a/GclRBkw.png"
+                        "text": "Assassin by Cyclic Games",
+                        "iconURL": "https://i.imgur.com/q0lDZMF.png"
                     }
                 }
             ],
@@ -142,7 +167,11 @@
                             "value": "Violating any part of the instructions for a kill method could result in the kill being invalid.\n\u2800",
                             "inline": "false"
                         }
-                    ]
+                    ],
+                    "footer": {
+                        "text": "Assassin by Cyclic Games",
+                        "iconURL": "https://i.imgur.com/q0lDZMF.png"
+                    }
                 },
                 {
                     "color": "0xdd2211",
@@ -175,7 +204,11 @@
                             "value": "You and another player that is not necessarily your target can choose to challenge each other to a duel with any rules of your choice.\n For more information, check out the #🔪-duel channel!\n\u2800",
                             "inline": "false"
                         }
-                    ]
+                    ],
+                    "footer": {
+                        "text": "Assassin by Cyclic Games",
+                        "iconURL": "https://i.imgur.com/q0lDZMF.png"
+                    }
                 }
             ]
         },
@@ -184,6 +217,31 @@
             "name": "📣-announcements",
             "type": "GUILD_TEXT",
             "topic": "Announcements about the active Cyclic game are here!",
+            "permissions": [
+                {
+                    "roleName": "observer",
+                    "preset": "viewonly-text"
+                },
+                {
+                    "roleName": "@everyone",
+                    "preset": "permissionless-text"
+                },
+                {
+                    "roleName": "player",
+                    "preset": "viewonly-text"
+                },
+                {
+                    "roleName": "admin",
+                    "preset": "admin-text"
+                }
+            ],
+            "default_message": ""
+        },
+        {
+            "abv": "leaderboard",
+            "name": "🏆-leaderboard",
+            "type": "GUILD_TEXT",
+            "topic": "See the top rated killers in the game!",
             "permissions": [
                 {
                     "roleName": "observer",
@@ -233,7 +291,11 @@
                     "color": "0x11ff11",
                     "title": "Voting",
                     "description": "desc",
-                    "timestamp": "false"
+                    "timestamp": "false",
+                    "footer": {
+                        "text": "Assassin by Cyclic Games",
+                        "iconURL": "https://i.imgur.com/q0lDZMF.png"
+                    }
                 }
             ]
         },
@@ -282,7 +344,11 @@
                             "value": "Make sure you have proof of both parties agreeing to the terms of the duel.\n\u2800",
                             "inline": "false"
                         }
-                    ]
+                    ],
+                    "footer": {
+                        "text": "Assassin by Cyclic Games",
+                        "iconURL": "https://i.imgur.com/q0lDZMF.png"
+                    }
                 }
             ]
         },
