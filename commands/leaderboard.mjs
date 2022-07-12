@@ -75,6 +75,7 @@ async function makeLeaderboardEmbed(leaderboardJSON) {
     .setColor(0xffffff)
     .setDescription("Top ranked players in the current game.\n\u2800")
     .setThumbnail('https://i.imgur.com/q0lDZMF.png')
+    .setTimestamp()
     .setFooter({
         text: "Assassin by Cyclic Games",
         iconURL: "https://i.imgur.com/q0lDZMF.png"
