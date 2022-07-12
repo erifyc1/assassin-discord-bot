@@ -5,19 +5,19 @@
         "permissions": [
             {
                 "roleName": "observer",
-                "preset": "viewonly-category"
+                "preset": "viewonly"
             },
             {
                 "roleName": "@everyone",
-                "preset": "viewonly-category"
+                "preset": "viewonly"
             },
             {
                 "roleName": "player",
-                "preset": "viewonly-category"
+                "preset": "viewonly"
             },
             {
                 "roleName": "admin",
-                "preset": "admin-category"
+                "preset": "admin"
             }
         ]
     },
@@ -30,19 +30,19 @@
             "permissions": [
                 {
                     "roleName": "observer",
-                    "preset": "permissionless-text"
+                    "preset": "permissionless"
                 },
                 {
                     "roleName": "@everyone",
-                    "preset": "permissionless-text"
+                    "preset": "permissionless"
                 },
                 {
                     "roleName": "player",
-                    "preset": "permissionless-text"
+                    "preset": "permissionless"
                 },
                 {
                     "roleName": "admin",
-                    "preset": "admin-text"
+                    "preset": "admin"
                 }
             ],
             "default_message": ""
@@ -55,19 +55,19 @@
             "permissions": [
                 {
                     "roleName": "observer",
-                    "preset": "viewonly-text"
+                    "preset": "viewonly"
                 },
                 {
                     "roleName": "@everyone",
-                    "preset": "viewonly-text"
+                    "preset": "viewonly"
                 },
                 {
                     "roleName": "player",
-                    "preset": "viewonly-text"
+                    "preset": "viewonly"
                 },
                 {
                     "roleName": "admin",
-                    "preset": "admin-text"
+                    "preset": "admin"
                 }
             ],
             "default_message": "",
@@ -124,19 +124,19 @@
             "permissions": [
                 {
                     "roleName": "observer",
-                    "preset": "viewonly-text"
+                    "preset": "viewonly"
                 },
                 {
                     "roleName": "@everyone",
-                    "preset": "viewonly-text"
+                    "preset": "viewonly"
                 },
                 {
                     "roleName": "player",
-                    "preset": "viewonly-text"
+                    "preset": "viewonly"
                 },
                 {
                     "roleName": "admin",
-                    "preset": "admin-text"
+                    "preset": "admin"
                 }
             ],
             "default_message": "",
@@ -220,19 +220,19 @@
             "permissions": [
                 {
                     "roleName": "observer",
-                    "preset": "viewonly-text"
+                    "preset": "viewonly"
                 },
                 {
                     "roleName": "@everyone",
-                    "preset": "permissionless-text"
+                    "preset": "permissionless"
                 },
                 {
                     "roleName": "player",
-                    "preset": "viewonly-text"
+                    "preset": "viewonly"
                 },
                 {
                     "roleName": "admin",
-                    "preset": "admin-text"
+                    "preset": "admin"
                 }
             ],
             "default_message": ""
@@ -245,19 +245,19 @@
             "permissions": [
                 {
                     "roleName": "observer",
-                    "preset": "viewonly-text"
+                    "preset": "viewonly"
                 },
                 {
                     "roleName": "@everyone",
-                    "preset": "permissionless-text"
+                    "preset": "permissionless"
                 },
                 {
                     "roleName": "player",
-                    "preset": "viewonly-text"
+                    "preset": "viewonly"
                 },
                 {
                     "roleName": "admin",
-                    "preset": "admin-text"
+                    "preset": "admin"
                 }
             ],
             "default_message": ""
@@ -270,19 +270,19 @@
             "permissions": [
                 {
                     "roleName": "observer",
-                    "preset": "viewonly-text"
+                    "preset": "viewonly"
                 },
                 {
                     "roleName": "@everyone",
-                    "preset": "permissionless-text"
+                    "preset": "permissionless"
                 },
                 {
                     "roleName": "player",
-                    "preset": "default-text"
+                    "preset": "default"
                 },
                 {
                     "roleName": "admin",
-                    "preset": "admin-text"
+                    "preset": "admin"
                 }
             ],
             "default_message": "",
@@ -290,7 +290,7 @@
                 {
                     "color": "0x11ff11",
                     "title": "Voting",
-                    "description": "desc",
+                    "description": "to be implemented",
                     "timestamp": "false",
                     "footer": {
                         "text": "Assassin by Cyclic Games",
@@ -307,19 +307,19 @@
             "permissions": [
                 {
                     "roleName": "observer",
-                    "preset": "viewonly-text"
+                    "preset": "viewonly"
                 },
                 {
                     "roleName": "@everyone",
-                    "preset": "permissionless-text"
+                    "preset": "permissionless"
                 },
                 {
                     "roleName": "player",
-                    "preset": "default-text"
+                    "preset": "default"
                 },
                 {
                     "roleName": "admin",
-                    "preset": "admin-text"
+                    "preset": "admin"
                 }
             ],
             "default_message": "",
@@ -360,19 +360,19 @@
             "permissions": [
                 {
                     "roleName": "observer",
-                    "preset": "default-text"
+                    "preset": "default"
                 },
                 {
                     "roleName": "@everyone",
-                    "preset": "viewonly-text"
+                    "preset": "viewonly"
                 },
                 {
                     "roleName": "player",
-                    "preset": "default-text"
+                    "preset": "default"
                 },
                 {
                     "roleName": "admin",
-                    "preset": "admin-text"
+                    "preset": "admin"
                 }
             ],
             "default_message": "Typical Assassin player trying to figure out their killer.\nhttps://giphy.com/gifs/reaction-l36kU80xPf0ojG0Erg"
@@ -385,19 +385,19 @@
             "permissions": [
                 {
                     "roleName": "observer",
-                    "preset": "default-voice"
+                    "preset": "default"
                 },
                 {
                     "roleName": "@everyone",
-                    "preset": "viewonly-voice"
+                    "preset": "viewonly"
                 },
                 {
                     "roleName": "player",
-                    "preset": "default-voice"
+                    "preset": "default"
                 },
                 {
                     "roleName": "admin",
-                    "preset": "admin-voice"
+                    "preset": "admin"
                 }
             ]
         }

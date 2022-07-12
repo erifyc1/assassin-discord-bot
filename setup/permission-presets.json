@@ -1,57 +1,5 @@
 {
-    "default-text": {
-        "allow": [
-            "VIEW_CHANNEL",
-            "CREATE_INSTANT_INVITE",
-            "SEND_MESSAGES",
-            "SEND_MESSAGES_IN_THREADS",
-            "EMBED_LINKS",
-            "ATTACH_FILES",
-            "ADD_REACTIONS",
-            "USE_EXTERNAL_EMOJIS",
-            "USE_EXTERNAL_STICKERS",
-            "READ_MESSAGE_HISTORY",
-            "USE_APPLICATION_COMMANDS"
-        ],
-        "deny": [
-            "MANAGE_CHANNELS",
-            "MANAGE_WEBHOOKS",
-            "CREATE_PUBLIC_THREADS",
-            "CREATE_PRIVATE_THREADS",
-            "MENTION_EVERYONE",
-            "MANAGE_MESSAGES",
-            "MANAGE_THREADS",
-            "SEND_TTS_MESSAGES"
-        ]
-    },
-    "default-voice": {
-        "allow": [
-            "VIEW_CHANNEL",
-            "CREATE_INSTANT_INVITE",
-            "CONNECT",
-            "SPEAK",
-            "STREAM",
-            "SEND_MESSAGES",
-            "EMBED_LINKS",
-            "ATTACH_FILES",
-            "ADD_REACTIONS",
-            "USE_EXTERNAL_EMOJIS",
-            "USE_EXTERNAL_STICKERS",
-            "READ_MESSAGE_HISTORY",
-            "USE_APPLICATION_COMMANDS"
-        ],
-        "deny": [
-            "MANAGE_CHANNELS",
-            "MUTE_MEMBERS",
-            "DEAFEN_MEMBERS",
-            "MOVE_MEMBERS",
-            "MANAGE_EVENTS",
-            "MENTION_EVERYONE",
-            "MANAGE_MESSAGES",
-            "SEND_TTS_MESSAGES"
-        ]
-    },
-    "default-category": {
+    "default": {
         "allow": [
             "VIEW_CHANNEL",
             "CREATE_INSTANT_INVITE",
@@ -83,59 +31,7 @@
             "SEND_TTS_MESSAGES"
         ]
     },
-    "viewonly-text": {
-        "allow": [
-            "VIEW_CHANNEL",
-            "READ_MESSAGE_HISTORY",
-            "CREATE_INSTANT_INVITE"
-        ],
-        "deny": [
-            "SEND_MESSAGES",
-            "SEND_MESSAGES_IN_THREADS",
-            "EMBED_LINKS",
-            "ATTACH_FILES",
-            "ADD_REACTIONS",
-            "USE_EXTERNAL_EMOJIS",
-            "USE_EXTERNAL_STICKERS",
-            "USE_APPLICATION_COMMANDS",
-            "MANAGE_CHANNELS",
-            "MANAGE_WEBHOOKS",
-            "CREATE_PUBLIC_THREADS",
-            "CREATE_PRIVATE_THREADS",
-            "MENTION_EVERYONE",
-            "MANAGE_MESSAGES",
-            "MANAGE_THREADS",
-            "SEND_TTS_MESSAGES"
-        ]
-    },
-    "viewonly-voice": {
-        "allow": [
-            "VIEW_CHANNEL",
-            "READ_MESSAGE_HISTORY",
-            "CREATE_INSTANT_INVITE"
-        ],
-        "deny": [
-            "CONNECT",
-            "SPEAK",
-            "STREAM",
-            "SEND_MESSAGES",
-            "EMBED_LINKS",
-            "ATTACH_FILES",
-            "ADD_REACTIONS",
-            "USE_EXTERNAL_EMOJIS",
-            "USE_EXTERNAL_STICKERS",
-            "USE_APPLICATION_COMMANDS",
-            "MANAGE_CHANNELS",
-            "MUTE_MEMBERS",
-            "DEAFEN_MEMBERS",
-            "MOVE_MEMBERS",
-            "MANAGE_EVENTS",
-            "MENTION_EVERYONE",
-            "MANAGE_MESSAGES",
-            "SEND_TTS_MESSAGES"
-        ]
-    },
-    "viewonly-category": {
+    "viewonly": {
         "allow": [
             "VIEW_CHANNEL",
             "READ_MESSAGE_HISTORY",
@@ -167,57 +63,7 @@
             "SEND_TTS_MESSAGES"
         ]
     },
-    "admin-text": {
-        "allow": [
-            "VIEW_CHANNEL",
-            "CREATE_INSTANT_INVITE",
-            "SEND_MESSAGES",
-            "SEND_MESSAGES_IN_THREADS",
-            "EMBED_LINKS",
-            "ATTACH_FILES",
-            "ADD_REACTIONS",
-            "USE_EXTERNAL_EMOJIS",
-            "USE_EXTERNAL_STICKERS",
-            "READ_MESSAGE_HISTORY",
-            "USE_APPLICATION_COMMANDS",
-            "MANAGE_CHANNELS",
-            "MANAGE_WEBHOOKS",
-            "CREATE_PUBLIC_THREADS",
-            "CREATE_PRIVATE_THREADS",
-            "MENTION_EVERYONE",
-            "MANAGE_MESSAGES",
-            "MANAGE_THREADS",
-            "SEND_TTS_MESSAGES"
-        ],
-        "deny": []
-    },
-    "admin-voice": {
-        "allow": [
-            "VIEW_CHANNEL",
-            "CREATE_INSTANT_INVITE",
-            "CONNECT",
-            "SPEAK",
-            "STREAM",
-            "SEND_MESSAGES",
-            "EMBED_LINKS",
-            "ATTACH_FILES",
-            "ADD_REACTIONS",
-            "USE_EXTERNAL_EMOJIS",
-            "USE_EXTERNAL_STICKERS",
-            "READ_MESSAGE_HISTORY",
-            "USE_APPLICATION_COMMANDS",
-            "MANAGE_CHANNELS",
-            "MUTE_MEMBERS",
-            "DEAFEN_MEMBERS",
-            "MOVE_MEMBERS",
-            "MANAGE_EVENTS",
-            "MENTION_EVERYONE",
-            "MANAGE_MESSAGES",
-            "SEND_TTS_MESSAGES"
-        ],
-        "deny": []
-    },
-    "admin-category": {
+    "admin": {
         "allow": [
             "VIEW_CHANNEL",
             "CREATE_INSTANT_INVITE",
@@ -248,57 +94,7 @@
         ],
         "deny": []
     },
-    "permissionless-text": {
-        "allow": [],
-        "deny": [
-            "VIEW_CHANNEL",
-            "CREATE_INSTANT_INVITE",
-            "SEND_MESSAGES",
-            "SEND_MESSAGES_IN_THREADS",
-            "EMBED_LINKS",
-            "ATTACH_FILES",
-            "ADD_REACTIONS",
-            "USE_EXTERNAL_EMOJIS",
-            "USE_EXTERNAL_STICKERS",
-            "READ_MESSAGE_HISTORY",
-            "USE_APPLICATION_COMMANDS",
-            "MANAGE_CHANNELS",
-            "MANAGE_WEBHOOKS",
-            "CREATE_PUBLIC_THREADS",
-            "CREATE_PRIVATE_THREADS",
-            "MENTION_EVERYONE",
-            "MANAGE_MESSAGES",
-            "MANAGE_THREADS",
-            "SEND_TTS_MESSAGES"
-        ]
-    },
-    "permissionless-voice": {
-        "allow": [],
-        "deny": [
-            "VIEW_CHANNEL",
-            "CREATE_INSTANT_INVITE",
-            "CONNECT",
-            "SPEAK",
-            "STREAM",
-            "SEND_MESSAGES",
-            "EMBED_LINKS",
-            "ATTACH_FILES",
-            "ADD_REACTIONS",
-            "USE_EXTERNAL_EMOJIS",
-            "USE_EXTERNAL_STICKERS",
-            "READ_MESSAGE_HISTORY",
-            "USE_APPLICATION_COMMANDS",
-            "MANAGE_CHANNELS",
-            "MUTE_MEMBERS",
-            "DEAFEN_MEMBERS",
-            "MOVE_MEMBERS",
-            "MANAGE_EVENTS",
-            "MENTION_EVERYONE",
-            "MANAGE_MESSAGES",
-            "SEND_TTS_MESSAGES"
-        ]
-    },
-    "permissionless-category": {
+    "permissionless": {
         "allow": [],
         "deny": [
             "VIEW_CHANNEL",

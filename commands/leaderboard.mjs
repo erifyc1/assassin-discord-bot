@@ -1,6 +1,6 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
-
-let active = true;
+import { MessageEmbed } from 'discord.js';
+import fetch from 'node-fetch';
 
 export const data = new SlashCommandBuilder()
     .setName('leaderboard')
@@ -14,27 +14,102 @@ export const data = new SlashCommandBuilder()
 				{ name: 'toggle', value: 'toggle' },
 			));
 
-export async function execute(interaction) {
+export async function execute(interaction, client, guildsData) {
     switch (interaction.options.getString('subcommand')) {
         case 'refresh':
-            // let response = '';
-            // let i = 0;
-            // const res2 = await fetch(('http://www.cyclic.games/getLeaderboard/' + id), {
-            //     method: 'get',
-            //     headers: { 'Authorization': ('Token ' + data.token) }
-            // });
-            // const leaderboard = await res2.json();
-            // for (const elem of leaderboard) {
-            //     response += '#' + ++i + ': ' + elem.username + ' | ' + elem.kills + ' kills\n';
-            // }
-            // interaction.reply(response);
-            await interaction.reply({ content: 'Leaderboard refreshed.' });
+            const idx = guildsData.guilds.findIndex((elem) => elem.guildID === interaction.guild.id);
+            if (idx === -1) {
+                interaction.reply('You must run /init before using the leaderboard.')
+                return;
+            }
+            const currentGuildData = guildsData.guilds[idx];
+            await refresh(client, currentGuildData);
+            await interaction.reply('Leaderboard refreshed, check <#' + currentGuildData.channels.leaderboard + '>.');
             break;
+            
+            case 'toggle':
+                active = !active;
+                const str = 'Leaderboard ' + active ? 'enabled.' : 'disabled.';
+                await interaction.reply({ content: str });
+                break;
+            }
+};
 
-        case 'toggle':
-            active = !active;
-            const str = 'Leaderboard ' + active ? 'enabled.' : 'disabled.';
-            await interaction.reply({ content: str });
-            break;
+export async function refresh(client, currentGuildData) {
+    // get the current guild and leaderboard channel
+    // failsafe checks if the guild or channel do not exist
+    const guild = client.guilds.cache.get(currentGuildData.guildID);
+    if (!guild) {
+        console.log('failed to find guild ' + currentGuildData.guildID);
+        return;
+    }
+    const leaderboardChannel = guild.channels.cache.get(currentGuildData.channels.leaderboard);
+    if (!leaderboardChannel) {
+        console.log('failed to find leaderboard channel ' + currentGuildData.channels.leaderboard);
+        return;
+    }
+    // clears up to 10 existing messages in the leaderboard chat, hopefully getting rid of all previous leaderboard posts
+    const messages = await leaderboardChannel.messages.fetch({ limit: 10 });
+    messages.forEach(msg => { msg.delete() });
+
+    // check if no game is linked, sends blank embed
+    if (currentGuildData.linkedGameID === '' || currentGuildData.apiToken === '') {
+        const blankLeaderboardEmbed = await makeBlankLeaderboardEmbed();
+        await leaderboardChannel.send({ embeds: [blankLeaderboardEmbed] });
+    }
+    else {
+        const res2 = await fetch(('http://www.cyclic.games/getLeaderboard/' + currentGuildData.linkedGameID), {
+            method: 'get',
+            headers: { 'Authorization': ('Token ' + currentGuildData.apiToken) }
+        });
+        const leaderboard = await res2.json();
+        const leaderboardEmbed = await makeLeaderboardEmbed(leaderboard);
+        await leaderboardChannel.send({ embeds: [leaderboardEmbed]});
     }
 };
+
+// function to create the leaderboard embed
+async function makeLeaderboardEmbed(leaderboardJSON) {
+    const embed = new MessageEmbed()
+    .setTitle("Leaderboard")
+    .setColor(0xffffff)
+    .setDescription("Top ranked players in the current game.\n\u2800")
+    .setThumbnail('https://i.imgur.com/q0lDZMF.png')
+    .setFooter({
+        text: "Assassin by Cyclic Games",
+        iconURL: "https://i.imgur.com/q0lDZMF.png"
+    });
+    let usernames = '', kills = '';
+    console.log(leaderboardJSON);
+    if (Object.keys(leaderboardJSON).length <= 1) {
+        embed.addFields({ name: 'Error', value: 'Failed to fetch leaderboard', inline: false });
+    }
+    else {
+        for (let i in leaderboardJSON) {
+            const elem = leaderboardJSON[i];
+            usernames += `${elem.alive ? `🟢 | ` : `🔴 | `}  #${++i}\t | ${elem.username}\n`;
+            kills += `${elem.kills}\n`;
+            --i;
+        }
+        embed.addFields(
+            { name: '❤️ | Rank | Name', value: usernames, inline: true },
+            { name: 'Kills', value: kills, inline: true },
+        )
+    }
+    return embed;
+}
+
+// parameterless version for when there is no game linked
+async function makeBlankLeaderboardEmbed() {
+    const embed = new MessageEmbed()
+    .setTitle("Leaderboard")
+    .setColor(0xffffff)
+    .setDescription("Top ranked players in the current game.\n\u2800")
+    .setThumbnail('https://i.imgur.com/q0lDZMF.png')
+    .setTimestamp()
+    .setFooter({
+        text: "Assassin by Cyclic Games",
+        iconURL: "https://i.imgur.com/q0lDZMF.png"
+    });
+    return embed;
+}

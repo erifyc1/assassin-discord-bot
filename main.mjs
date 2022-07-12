@@ -36,6 +36,12 @@ const filePaths =
 }
 
 
+client.on("guildMemberAdd", async () => {
+    return 'hi';
+});
+
+
+
 
 client.on("ready", async () => {
     // set up bot
@@ -119,6 +125,7 @@ client.on('interactionCreate', async interaction => {
             await printDebug('-> command triggered: ' + command.data.name);
             switch (command.data.name) {
                 case 'delete':
+                case 'leaderboard':
                     await command.execute(interaction, client, guildsData);
                     break;
                 case 'init':

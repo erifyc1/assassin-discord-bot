@@ -40,7 +40,7 @@ async function generateChannels(channelData, permissionData, roles, guild, categ
             })
         })
         .catch(console.error);
-        guildChannel.setParent(categoryID);
+        guildChannel.setParent(categoryID, { lockPermissions: false });
         channels[channel.abv] = guildChannel.id;
         // send default message, button, and/or embed
         if (channel.type === 'GUILD_TEXT') {

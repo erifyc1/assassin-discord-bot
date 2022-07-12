@@ -22,7 +22,7 @@ export async function execute(interaction, guildsData) {
         const data = await res.json();
         const res2 = await fetch(('http://www.cyclic.games/getLeaderboard/' + id), {
             method: 'get',
-            headers: { 'Authorization': ('Token ' + data.token) }
+            headers: { 'Authorization': ('Token ' + data.apiToken) }
         });
         const data2 = await res2.json();
         console.log(data2);
