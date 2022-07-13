@@ -28,9 +28,9 @@ export async function execute(interaction, client, guildsData) {
             break;
             
             case 'toggle':
-                active = !active;
-                const str = 'Leaderboard ' + active ? 'enabled.' : 'disabled.';
-                await interaction.reply({ content: str });
+                // active = !active;
+                // const str = active ? 'Leaderboard enabled.' : 'Leaderboard disabled.';
+                await interaction.reply({ content: 'feature not implemented yet' });
                 break;
             }
 };
@@ -80,7 +80,7 @@ async function makeLeaderboardEmbed(leaderboardJSON) {
         text: "Assassin by Cyclic Games",
         iconURL: "https://i.imgur.com/q0lDZMF.png"
     });
-    let usernames = '', kills = '';
+    let statuses = '', usernames = '', kills = '';
     console.log(leaderboardJSON);
     if (Object.keys(leaderboardJSON).length <= 1) {
         embed.addFields({ name: 'Error', value: 'Failed to fetch leaderboard', inline: false });
@@ -88,12 +88,14 @@ async function makeLeaderboardEmbed(leaderboardJSON) {
     else {
         for (let i in leaderboardJSON) {
             const elem = leaderboardJSON[i];
-            usernames += `${elem.alive ? `🟢 | ` : `🔴 | `}  #${++i}\t | ${elem.username}\n`;
+            statuses += `${elem.alive ? `✅` : `❌`}\u2800\u2800\u2800#${++i}\n`;
+            usernames += `${elem.username}\n`;
             kills += `${elem.kills}\n`;
             --i;
         }
         embed.addFields(
-            { name: '❤️ | Rank | Name', value: usernames, inline: true },
+            { name: 'Alive\u2800\u2800Rank', value: statuses, inline: true },
+            { name: 'Name', value: usernames, inline: true },
             { name: 'Kills', value: kills, inline: true },
         )
     }

@@ -37,7 +37,8 @@ async function generateChannels(channelData, permissionData, roles, guild, categ
                     allow: permissionData[roleObj.preset].allow,
                     deny: permissionData[roleObj.preset].deny
                 }
-            })
+            }),
+            topic: channel.topic
         })
         .catch(console.error);
         guildChannel.setParent(categoryID, { lockPermissions: false });

@@ -178,6 +178,10 @@ client.on('interactionCreate', async interaction => {
                     // loginCommand.showLoginModal(interaction);
                     interaction.reply('user: ' + username + '\npass: ' + password);
                     break;
+                case 'proposalmodal':
+                    client.commands.get('addproposal').submitForReview(interaction, client, guildsData);
+                    interaction.reply({ content: 'Proposal submitted.\nPlease wait for an admin to review your proposal.', ephemeral: true });
+                    break;
                 default:
                     return;
             }

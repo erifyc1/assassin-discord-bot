@@ -26,7 +26,7 @@
             "abv": "admin",
             "name": "🎮-admin-control",
             "type": "GUILD_TEXT",
-            "topic": "Admins can control aspects of the game from here. Make sure they have the special Admin role or have the 'administrator' permission!",
+            "topic": "Admins can control aspects of the game from here.",
             "permissions": [
                 {
                     "roleName": "observer",
@@ -45,7 +45,17 @@
                     "preset": "admin"
                 }
             ],
-            "default_message": ""
+            "embeds": [
+                {
+                    "color": "0x369c2f",
+                    "title": "Admin Control",
+                    "description": "A place to run Cyclic Assassin Admin commands!\n\u2800\nMake sure Admins have the **'Cyclic Assassin Admin'** role or **'administrator'** permission!\n\u2800\nTo get started, type /help for a list of all commands.",
+                    "footer": {
+                        "text": "Assassin by Cyclic Games",
+                        "iconURL": "https://i.imgur.com/q0lDZMF.png"
+                    }
+                }
+            ]
         },
         {
             "abv": "howtoplay",
@@ -70,7 +80,6 @@
                     "preset": "admin"
                 }
             ],
-            "default_message": "",
             "embeds": [
                 {
                     "color": "0xff1111",
@@ -139,7 +148,6 @@
                     "preset": "admin"
                 }
             ],
-            "default_message": "",
             "embeds": [
                 {
                     "color": "0xffff11",
@@ -234,8 +242,7 @@
                     "roleName": "admin",
                     "preset": "admin"
                 }
-            ],
-            "default_message": ""
+            ]
         },
         {
             "abv": "leaderboard",
@@ -259,8 +266,7 @@
                     "roleName": "admin",
                     "preset": "admin"
                 }
-            ],
-            "default_message": ""
+            ]
         },
         {
             "abv": "voting",
@@ -285,7 +291,6 @@
                     "preset": "admin"
                 }
             ],
-            "default_message": "",
             "embeds": [
                 {
                     "color": "0x11ff11",
@@ -322,7 +327,6 @@
                     "preset": "admin"
                 }
             ],
-            "default_message": "",
             "embeds": [
                 {
                     "color": "0x001111",
