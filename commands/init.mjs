@@ -89,10 +89,11 @@ function generated(guildsData, guildID) {
 
 async function makeEmbed(embedData) {
     // reqired fields
-    const embed = new MessageEmbed()
-	.setTitle(embedData.title)
-	.setColor(embedData.color)
-	.setDescription(embedData.description);
+    const embed = new MessageEmbed({
+        title: embedData.title,
+        color: embedData.color,
+        description: embedData.description
+    });
     
 	if (embedData.url) embed.setURL(embedData.url);
     if (embedData.author) embed.setAuthor(embedData.author);
@@ -106,11 +107,11 @@ async function makeEmbed(embedData) {
 
 async function makeButton(buttonData) {
     
-    const button = new MessageButton()
-    .setStyle(buttonData.style)
-    .setCustomId(buttonData.customId)
-    .setLabel(buttonData.label);
-    
+    const button = new MessageButton({
+        style: buttonData.style,
+        customId: buttonData.customId,
+        label: buttonData.label
+    });
     return button;
 }
 

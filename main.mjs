@@ -159,8 +159,13 @@ client.on('interactionCreate', async interaction => {
                     await loginCommand.showLoginModal(interaction);
                     break;
                 case 'joinbutton':
-                    const command = await client.commands.get('join');
-                    await command.execute(interaction);
+                    const joinCommand = await client.commands.get('join');
+                    await joinCommand.execute(interaction);
+                    break;
+                case 'proposalauthorized':
+                case 'proposalrejected':
+                    const addProposalCommand = await client.commands.get('addproposal');
+                    await addProposalCommand.proposalDecision(interaction, interaction.customId === 'proposalauthorized');
                     break;
                 default:
                     break;

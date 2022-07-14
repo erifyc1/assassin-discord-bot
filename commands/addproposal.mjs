@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { MessageEmbed, MessageActionRow, MessageButton, Modal, TextInputComponent } from 'discord.js';
+import { MessageEmbed, MessageActionRow, MessageButton, Modal, TextInputComponent, Message, MessageSelectMenu } from 'discord.js';
 
 export const data = new SlashCommandBuilder()
     .setName('addproposal')
@@ -23,25 +23,54 @@ export async function showProposalModal(interaction) {
         .addComponents(
             new MessageActionRow()
                 .addComponents(
-                    new TextInputComponent()
-                    .setCustomId('name')
-                    .setLabel('Proposal Name')
-                    .setStyle(1)
-                    .setPlaceholder('Name your proposal.')
-                    .setMinLength(10)
-                    .setMaxLength(100),
+                    new TextInputComponent({
+                        customId: 'name',
+                        label: 'Proposal Name',
+                        style: 'SHORT',
+                        placeholder: 'Name your proposal.',
+                        minLength: 10,
+                        maxLength: 100
+                    })
                 ),
             new MessageActionRow()
                 .addComponents(
-                    new TextInputComponent()
-                    .setCustomId('desc')
-                    .setLabel('Proposal Description')
-                    .setStyle(2)
-                    .setPlaceholder('Describe your proposal. Be thorough.')
-                    .setMinLength(20)
-                    .setMaxLength(400),
+                    new MessageSelectMenu({
+                        customId: 'topic',
+                        placeholder: 'Select Category',
+                        options: [
+                            {
+                                label: 'Kill Methods',
+                                description: 'Relating to adding/removing/modifying kill methods.',
+                                value: 'km',
+                                emoji: '💀'
+                            },
+                            {
+                                label: 'Town Hall',
+                                description: 'Relating to Town Hall processes.',
+                                value: 'th',
+                                emoji: '🏫'
+                            },
+                            {
+                                label: 'Other',
+                                description: 'Relating to other aspects of the game.',
+                                value: 'ot',
+                                emoji: '❓'
+                            }
+                        ]
+                    })
+                ),
+            new MessageActionRow()
+                .addComponents(
+                    new TextInputComponent({
+                        customId: 'desc',
+                        label: 'Proposal Description',
+                        style: 'PARAGRAPH',
+                        placeholder: 'Describe your proposal. Be thorough.',
+                        minLength: 20,
+                        maxLength: 400
+                    })
                 )
-        )
+            )
         .setCustomId('proposalmodal')
         .setTitle('New Rule Proposal');
     await interaction.showModal(modal);
@@ -70,20 +99,42 @@ export async function submitForReview(interaction, client, guildsData) {
         console.log('failed to find admin channel ' + currentGuildData.channels.admin);
         return;
     }
+
     // makes the embed and sends in admin channel with allow/reject button
     const embed = await makeProposalEmbed(name, desc, userID);
-    await adminChannel.send({ embeds: [embed] });
+    const actionRow = new MessageActionRow()
+    .addComponents(
+        new MessageButton({
+            style: 'DANGER',
+            customId: 'proposalrejected',
+            label: 'Reject'
+        }),
+        new MessageButton({
+            style: 'SUCCESS',
+            customId: 'proposalauthorized',
+            label: 'Authorize'
+        })
+    )
+    await adminChannel.send({ embeds: [embed], components: [actionRow] });
 
 }
+
+export async function proposalDecision(interaction, accepted) {
+    const propEmbed = interaction.message.embeds[0];
+    propEmbed.addFields({ name: `${accepted ? `Authorized` : `Rejected`} by:`, value: `<@${interaction.user.id}>`, inline: true });
+    await interaction.message.edit({ embeds: [propEmbed], components: [] });
+    await interaction.reply({ content: `You have successfully ${accepted ? `authorized` : `rejected`} this proposal.`, ephemeral: true });
+}
+
 
 
 async function makeProposalEmbed(name, desc, userID) {
     return new MessageEmbed()
-    .setTitle(`Proposal:\n${name}`)
+    .setTitle(`Gameplay Proposal:\n${name}`)
     .setColor(0xffffff)
-    .setDescription(`Description:\n${desc}\n\u2800`)
+    .setDescription(`Description:\n${desc}`)
     .setThumbnail('https://i.imgur.com/q0lDZMF.png')
-    .setFields({ name: `Proposal Author:`, value: `<@${userID}>`, inline: false });
+    .setFields({ name: `Author:`, value: `<@${userID}>`, inline: true });
     // .setFooter({
     //     text: `Proposal Author: <@${userID}>`,
     //     iconURL: "https://i.imgur.com/q0lDZMF.png"
