@@ -23,7 +23,7 @@ export async function execute(interaction, client, guildsData) {
         }
 
         guildsData.guilds = guildsData.guilds.filter((elem) => elem.guildID != interaction.guild.id);
-        updateJson(guildsData);
+        updateJson(guildsData, 'deleted guild');
         if (interaction.deferred) interaction.editReply('Game channels and roles deleted successfully.');
     }
     else {

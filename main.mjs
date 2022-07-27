@@ -134,9 +134,6 @@ client.on('interactionCreate', async interaction => {
                 case 'reset':
                     await command.execute(interaction, client, { guildsData, channelData, permissionData, roleData });
                     break;
-                case 'link':
-                    await command.execute(interaction, guildsData);
-                    break;
                 default:
                     await command.execute(interaction);
                     break;
@@ -167,6 +164,10 @@ client.on('interactionCreate', async interaction => {
                     const addProposalCommand = await client.commands.get('addproposal');
                     await addProposalCommand.proposalDecision(interaction, interaction.customId === 'proposalauthorized');
                     break;
+                case 'copiedToken':
+                    const linkCommand = await client.commands.get('link');
+                    await linkCommand.showLinkModal(interaction);
+                    break;
                 default:
                     break;
             }
@@ -186,6 +187,10 @@ client.on('interactionCreate', async interaction => {
                 case 'proposalmodal':
                     client.commands.get('addproposal').submitForReview(interaction, client, guildsData);
                     interaction.reply({ content: 'Proposal submitted.\nPlease wait for an admin to review your proposal.', ephemeral: true });
+                    break;
+                case 'linkmodal':
+                    await interaction.reply({ content: 'Validating Token, please wait.', ephemeral: true })
+                    client.commands.get('link').validateSubmission(interaction, guildsData);
                     break;
                 default:
                     return;

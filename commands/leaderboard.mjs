@@ -55,10 +55,23 @@ export async function refresh(client, currentGuildData) {
     // check if no game is linked, sends blank embed
     if (currentGuildData.linkedGameID === '' || currentGuildData.apiToken === '') {
         const blankLeaderboardEmbed = await makeBlankLeaderboardEmbed();
+        blankLeaderboardEmbed.title += ' (not linked)';
         await leaderboardChannel.send({ embeds: [blankLeaderboardEmbed] });
     }
     else {
-        const res2 = await fetch(('http://www.cyclic.games/getLeaderboard/' + currentGuildData.linkedGameID), {
+        // gets numerical game id from gamestring
+        const res = await fetch(('http://www.cyclic.games/getGameID/' + currentGuildData.linkedGameID.toUpperCase()), {
+            method: 'get',
+            headers: { 'Authorization': ('Token ' + currentGuildData.apiToken) }
+        });
+        const data = await res.json();
+        if (!data.id) {
+            console.log(`getGameID request failed ${currentGuildData.linkedGameID.toUpperCase()}`);
+            return;
+        }
+
+        // uses game numerical id to fetch updated leaderboard
+        const res2 = await fetch(('http://www.cyclic.games/getLeaderboard/' + data.id), {
             method: 'get',
             headers: { 'Authorization': ('Token ' + currentGuildData.apiToken) }
         });
@@ -89,7 +102,7 @@ async function makeLeaderboardEmbed(leaderboardJSON) {
         for (let i in leaderboardJSON) {
             const elem = leaderboardJSON[i];
             statuses += `${elem.alive ? `✅` : `❌`}\u2800\u2800\u2800#${++i}\n`;
-            usernames += `${elem.username}\n`;
+            usernames += `${elem.username.length >= 12 ? (elem.username.substring(0, 12) + '...') : elem.username}\n`;
             kills += `${elem.kills}\n`;
             --i;
         }

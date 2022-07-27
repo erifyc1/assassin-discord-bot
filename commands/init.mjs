@@ -15,7 +15,7 @@ export async function execute(interaction, setupData) {
         // under construction
         const currentGuild = await generateGuild(setupData, interaction.guild);
         setupData.guildsData.guilds.push(currentGuild);
-        updateJson(setupData.guildsData);
+        updateJson(setupData.guildsData, 'added guild');
         if (interaction.deferred) interaction.editReply('Game channels and roles initialized successfully.');
     }
     else {
