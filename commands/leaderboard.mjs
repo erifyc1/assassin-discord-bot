@@ -54,7 +54,7 @@ export async function refresh(client, currentGuildData) {
 
     // check if no game is linked, sends blank embed
     if (currentGuildData.linkedGameID === '' || currentGuildData.apiToken === '') {
-        const blankLeaderboardEmbed = await makeBlankLeaderboardEmbed();
+        const blankLeaderboardEmbed = makeBlankLeaderboardEmbed();
         blankLeaderboardEmbed.title += ' (not linked)';
         await leaderboardChannel.send({ embeds: [blankLeaderboardEmbed] });
     }
@@ -76,13 +76,13 @@ export async function refresh(client, currentGuildData) {
             headers: { 'Authorization': ('Token ' + currentGuildData.apiToken) }
         });
         const leaderboard = await res2.json();
-        const leaderboardEmbed = await makeLeaderboardEmbed(leaderboard);
-        await leaderboardChannel.send({ embeds: [leaderboardEmbed]});
+        const leaderboardEmbed = makeLeaderboardEmbed(leaderboard);
+        await leaderboardChannel.send({embeds: [leaderboardEmbed]});
     }
 };
 
 // function to create the leaderboard embed
-async function makeLeaderboardEmbed(leaderboardJSON) {
+function makeLeaderboardEmbed(leaderboardJSON) {
     const embed = new MessageEmbed()
     .setTitle("Leaderboard")
     .setColor(0xffffff)
@@ -99,12 +99,17 @@ async function makeLeaderboardEmbed(leaderboardJSON) {
         embed.addFields({ name: 'Error', value: 'Failed to fetch leaderboard', inline: false });
     }
     else {
-        for (let i in leaderboardJSON) {
+        const topThree = {
+            1: `🥇`,
+            2: `🥈`,
+            3: `🥉`
+        };
+        for (let i = 0; i < Object.keys(leaderboardJSON).length; i++) { // ${++i > 9 === 0 ? `🥇` : i === 2 ? `🥈` : i === 3 ? `🥉` : numberToEmoji(i)}
             const elem = leaderboardJSON[i];
-            statuses += `${elem.alive ? `✅` : `❌`}\u2800\u2800\u2800#${++i}\n`;
-            usernames += `${elem.username.length >= 12 ? (elem.username.substring(0, 12) + '...') : elem.username}\n`;
+            const rankNumber = (i + 1) <= 3 ? `\u2800${topThree[i + 1]}` : (i + 1) <= 9 ? `\u2800${numberToEmoji(i + 1)}` : numberToEmoji(i + 1);
+            statuses += `${elem.alive ? `✅` : `❌`}\u2800\u2800\u2800${rankNumber}\n`;
+            usernames += `${elem.username.length >= 15 ? (elem.username.substring(0, 15) + '...') : elem.username}\n`;
             kills += `${elem.kills}\n`;
-            --i;
         }
         embed.addFields(
             { name: 'Alive\u2800\u2800Rank', value: statuses, inline: true },
@@ -116,7 +121,7 @@ async function makeLeaderboardEmbed(leaderboardJSON) {
 }
 
 // parameterless version for when there is no game linked
-async function makeBlankLeaderboardEmbed() {
+function makeBlankLeaderboardEmbed() {
     const embed = new MessageEmbed()
     .setTitle("Leaderboard")
     .setColor(0xffffff)
@@ -128,4 +133,28 @@ async function makeBlankLeaderboardEmbed() {
         iconURL: "https://i.imgur.com/q0lDZMF.png"
     });
     return embed;
+}
+
+// converts leaderboard ranking to numerical emoji
+function numberToEmoji(number) {
+    if (number < 0) return;
+    const dict = {
+        0: ':zero:',
+        1: ':one:',
+        2: ':two:',
+        3: ':three:',
+        4: ':four:',
+        5: ':five:',
+        6: ':six:',
+        7: ':seven:',
+        8: ':eight:',
+        9: ':nine:'
+    };
+    if (number < 10) {
+        return dict[number];
+    }
+    else {
+        const last = number % 10;
+        return numberToEmoji(number / 10) + dict[last];
+    }
 }

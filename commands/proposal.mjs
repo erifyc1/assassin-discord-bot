@@ -2,7 +2,7 @@ import { SlashCommandBuilder } from '@discordjs/builders';
 import { MessageEmbed, MessageActionRow, MessageButton, Modal, TextInputComponent, Message, MessageSelectMenu } from 'discord.js';
 
 export const data = new SlashCommandBuilder()
-    .setName('addproposal')
+    .setName('proposal')
     .setDescription('Adds a proposal that everyone can vote on.');
     
 export async function execute(interaction) {

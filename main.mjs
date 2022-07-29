@@ -161,8 +161,8 @@ client.on('interactionCreate', async interaction => {
                     break;
                 case 'proposalauthorized':
                 case 'proposalrejected':
-                    const addProposalCommand = await client.commands.get('addproposal');
-                    await addProposalCommand.proposalDecision(interaction, interaction.customId === 'proposalauthorized');
+                    const proposalCommand = await client.commands.get('proposal');
+                    await proposalCommand.proposalDecision(interaction, interaction.customId === 'proposalauthorized');
                     break;
                 case 'copiedToken':
                     const linkCommand = await client.commands.get('link');
@@ -185,7 +185,7 @@ client.on('interactionCreate', async interaction => {
                     interaction.reply('user: ' + username + '\npass: ' + password);
                     break;
                 case 'proposalmodal':
-                    client.commands.get('addproposal').submitForReview(interaction, client, guildsData);
+                    client.commands.get('proposal').submitForReview(interaction, client, guildsData);
                     interaction.reply({ content: 'Proposal submitted.\nPlease wait for an admin to review your proposal.', ephemeral: true });
                     break;
                 case 'linkmodal':
