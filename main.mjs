@@ -1,4 +1,4 @@
-import { Client, Collection, IntegrationApplication, Intents } from 'discord.js';
+import { Client, Collection } from 'discord.js';
 import fetch from 'node-fetch';
 import { config } from 'dotenv'
 import fs from 'fs'
@@ -159,10 +159,16 @@ client.on('interactionCreate', async interaction => {
                     const joinCommand = await client.commands.get('join');
                     await joinCommand.execute(interaction);
                     break;
-                case 'proposalauthorized':
-                case 'proposalrejected':
+                case 'proposalapproved':
+                case 'proposalblocked':
+                    const idx = guildsData.guilds.findIndex((elem) => elem.guildID === interaction.guild.id);
+                    if (idx === -1) {
+                        interaction.reply('You must run /init before using the leaderboard.')
+                        return;
+                    }
+                    const votingChannelId = guildsData.guilds[idx].channels['voting'];
                     const proposalCommand = await client.commands.get('proposal');
-                    await proposalCommand.proposalDecision(interaction, interaction.customId === 'proposalauthorized');
+                    await proposalCommand.proposalDecision(client, interaction, interaction.customId === 'proposalapproved', votingChannelId);
                     break;
                 case 'copiedToken':
                     const linkCommand = await client.commands.get('link');
@@ -191,6 +197,10 @@ client.on('interactionCreate', async interaction => {
                 case 'linkmodal':
                     await interaction.reply({ content: 'Validating Token, please wait.', ephemeral: true })
                     client.commands.get('link').validateSubmission(interaction, guildsData);
+                    break;
+                case 'proposalreason':
+                    // does not use votingchannelid optional parameter
+                    client.commands.get('proposal').executeDecision(interaction, client, false);
                     break;
                 default:
                     return;
