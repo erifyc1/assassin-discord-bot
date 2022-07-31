@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { MessageEmbed, MessageActionRow, MessageButton, Modal, TextInputComponent, MessageSelectMenu, CommandInteraction } from 'discord.js';
+import { MessageEmbed, MessageActionRow, MessageButton, Modal, TextInputComponent, MessageSelectMenu, CommandInteraction, ThreadManager } from 'discord.js';
 
 const colors = {
     'red': 0xc71e12,
@@ -8,7 +8,8 @@ const colors = {
     'green': 0x1f700f,
     'blue': 0x0f60ab,
     'purple': 0x8f13ab,
-    'pink': 0xd91cb9
+    'pink': 0xd91cb9,
+    'cyclic': 0xce5d36
 }
 
 export const data = new SlashCommandBuilder()
@@ -144,52 +145,74 @@ export async function submitForReview(interaction, client, guildsData) {
  * @param {CommandInteraction} interaction 
  * @param {boolean} accepted 
  */
-export async function proposalDecision(interaction, client, accepted, votingChannelId) {
-    console.log(interaction.message);
-    if (accepted) {
+export async function proposalDecision(interaction, client, accepted, votingChannelId = '') {
+    if (accepted && votingChannelId) {
         // passes the proposal
-        executeDecision(interaction, client, accepted, votingChannelId);
+        await executeDecision(interaction, client, accepted, votingChannelId);
     }
     else {
         // ask for reason for denial
-        showReasonModal(interaction);
+        await showReasonModal(interaction);
     }
 }
-
-export async function executeDecision(interaction, client, accepted, votingChannelId = 0) {
-    // console.log(interaction);
+/**
+ * executes a moderator decision on a proposal (start voting or block)
+ * @param {CommandInteraction} interaction 
+ * @param {Client} client 
+ * @param {boolean} accepted 
+ * @param {String} votingChannelId 
+ */
+export async function executeDecision(interaction, client, accepted, votingChannelId = '') {
     const propEmbed = interaction.message.embeds[0];
+
     // modify the embed
     propEmbed.addFields({ name: `${accepted ? `Approved` : `Blocked`} by:`, value: `<@${interaction.user.id}>`, inline: true });
-    if (!accepted) {
+    await interaction.reply({ content: `You have successfully ${accepted ? `approved` : `blocked`} this proposal.`, ephemeral: true });
+    
+    // get author, open DM
+    const userId = propEmbed.fields[0].value.match(/^<@(\d{18})>$/)[1];
+    const dmchannel = await client.users.cache.get(userId).createDM();
+    const responseEmbed = makeResponseEmbed();
+
+    const proposalName = `"${propEmbed.title.substring(19)}"\n\n`;
+    responseEmbed.description += proposalName;
+    if (accepted) {
+        // send DM to proposal author
+        responseEmbed.description += `Congratulations! Your Cyclic Assassin Rule Proposal was accepted by a moderator.\nCheck out the <#${votingChannelId}> to view and discuss your proposal!`
+        dmchannel.send({ embeds: [responseEmbed] });
+
+        // send proposal in voting channel
+        const votingChannel = interaction.guild.channels.cache.get(votingChannelId);
+        const message = await votingChannel.send({ embeds: [propEmbed] });
+        const thread = await message.startThread({
+            name: `Discuss: '${proposalName}'`,
+            autoArchiveDuration: 60,
+            reason: `Proposal: '${proposalName}' discussion thread.`,
+            type: 'GUILD_PRIVATE_THREAD'
+        });
+        thread.send({ embeds: [{ title: 'This thread is for discussing the proposal posted above.', description: 'If you would like to hide this thread, hit \'**Leave Thread**\' or it will automatically hide after one hour of inactivity.'}]})
+        
+        console.log(`Created thread: ${thread.name}`);
+        message.react('👍');
+        message.react('👎');
+    }
+    else {
+        // send DM to proposal author
         let reason = interaction.fields.getTextInputValue('reason');
         if (!reason) reason = 'No reason given.';
+        responseEmbed.description += `We regret to inform you that your Cyclic Assassin Rule Proposal was blocked by a moderator.\nReason provided: ${reason}`;
+        dmchannel.send({ embeds: [responseEmbed] });
+
+        // cross out proposal embed
         propEmbed.setTitle(`~~${propEmbed.title}~~`);
         propEmbed.setDescription(`~~${propEmbed.description}~~`);
         propEmbed.addFields({ name: 'Denial Reason: ', value: `${reason}`, inline: false})
     }
     await interaction.message.edit({ embeds: [propEmbed], components: [] });
-    await interaction.reply({ content: `You have successfully ${accepted ? `approved` : `blocked`} this proposal.`, ephemeral: true });
-    
-    // send proposal in voting channel
-    if (accepted && votingChannelId) {
-        const votingChannel = guild.channels.cache.get(votingChannelId);
-        votingChannel.send({ embeds: [propEmbed] });
-    }
-    // send DM to proposal author
-    const userId = propEmbed.fields[0].value.match(/^<@(\d{18})>$/)[1];
-    const dmchannel = await client.users.cache.get(userId).createDM();
-    if (accepted) {
-        dmchannel.send({ content: `We regret to inform you that your Cyclic Assassin Rule Proposal was blocked by a moderator.\nReason provided: ${reason}` });
-    }
-    else {
-        dmchannel.send({ content: `Congratulations! Your Cyclic Assassin Rule Proposal was accepted by a moderator.\nCheck out the <#${votingChannelId}> to see and discuss your proposal!` });
-    }
-
 }
 
 /**
- * makes the proposal embed
+ * makes the proposal embed to be sent in the voting & admin channel
  * @param {String} name 
  * @param {String} desc 
  * @param {String} category 
@@ -199,10 +222,26 @@ export async function executeDecision(interaction, client, accepted, votingChann
 function makeProposalEmbed(name, desc, userID) {
     return new MessageEmbed()
     .setTitle(`Gameplay Proposal:\n${name}`)
-    .setColor(0xffffff)
+    .setColor(0xce5d36)
     .setDescription(`Description:\n${desc}`)
     .setThumbnail('https://i.imgur.com/q0lDZMF.png')
     .setFields({ name: `Author:`, value: `<@${userID}>`, inline: true });
+}
+
+/**
+ * Creates a baseline response embed to be sent to the proposal author (varies based on acceptance status)
+ * @returns {MessageEmbed}
+ */
+function makeResponseEmbed() {
+    return new MessageEmbed({
+        title: 'Proposal Status Update',
+        color: 0xce5d36,
+        description: `**Proposal:** `,
+        footer: {
+            text: "Assassin by Cyclic Games",
+            iconURL: "https://i.imgur.com/q0lDZMF.png"
+        }
+    });
 }
 
 /**
@@ -219,7 +258,7 @@ async function showReasonModal(interaction) {
                         customId: 'reason',
                         label: 'Reason',
                         style: 'PARAGRAPH',
-                        placeholder: 'Explain why you are blocking this proposal. [Optional]',
+                        placeholder: '[Optional] Explain why you are blocking this proposal.',
                         minLength: 0,
                         maxLength: 200
                     })

@@ -284,7 +284,7 @@
                 },
                 {
                     "roleName": "player",
-                    "preset": "default"
+                    "preset": "viewonly"
                 },
                 {
                     "roleName": "admin",
@@ -294,8 +294,8 @@
             "embeds": [
                 {
                     "color": "0x11ff11",
-                    "title": "Voting",
-                    "description": "to be implemented",
+                    "title": "Town Hall Proposal Voting",
+                    "description": "Want to implement a kill method, safezone, or other rule change? Use /proposal to get started!",
                     "timestamp": "false",
                     "footer": {
                         "text": "Assassin by Cyclic Games",

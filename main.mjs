@@ -168,7 +168,7 @@ client.on('interactionCreate', async interaction => {
                     }
                     const votingChannelId = guildsData.guilds[idx].channels['voting'];
                     const proposalCommand = await client.commands.get('proposal');
-                    await proposalCommand.proposalDecision(client, interaction, interaction.customId === 'proposalapproved', votingChannelId);
+                    await proposalCommand.proposalDecision(interaction, client, interaction.customId === 'proposalapproved', votingChannelId);
                     break;
                 case 'copiedToken':
                     const linkCommand = await client.commands.get('link');
@@ -200,7 +200,7 @@ client.on('interactionCreate', async interaction => {
                     break;
                 case 'proposalreason':
                     // does not use votingchannelid optional parameter
-                    client.commands.get('proposal').executeDecision(interaction, client, false);
+                    await client.commands.get('proposal').executeDecision(interaction, client, false);
                     break;
                 default:
                     return;
