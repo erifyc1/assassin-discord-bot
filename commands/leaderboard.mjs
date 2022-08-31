@@ -86,36 +86,39 @@ function makeLeaderboardEmbed(leaderboardJSON) {
     const embed = new MessageEmbed()
     .setTitle("Leaderboard")
     .setColor(0xffffff)
-    .setDescription("Top ranked players in the current game.\n\u2800")
-    .setThumbnail('https://i.imgur.com/q0lDZMF.png')
+    // .setDescription("Top ranked players in the current game.\n\u2800")
+    // .setThumbnail('https://i.imgur.com/q0lDZMF.png')
     .setTimestamp()
     .setFooter({
         text: "Assassin by Cyclic Games",
         iconURL: "https://i.imgur.com/q0lDZMF.png"
     });
-    let statuses = '', usernames = '', kills = '';
     console.log(leaderboardJSON);
     if (Object.keys(leaderboardJSON).length <= 1) {
         embed.addFields({ name: 'Error', value: 'Failed to fetch leaderboard', inline: false });
     }
     else {
-        const topThree = {
-            1: `🥇`,
-            2: `🥈`,
-            3: `🥉`
-        };
-        for (let i = 0; i < Object.keys(leaderboardJSON).length; i++) { // ${++i > 9 === 0 ? `🥇` : i === 2 ? `🥈` : i === 3 ? `🥉` : numberToEmoji(i)}
+        embed.description = `\`\`\`❤️  Player      Kills Score\n`;
+        for (let i = 0; i < Object.keys(leaderboardJSON).length; i++) {
             const elem = leaderboardJSON[i];
-            const rankNumber = (i + 1) <= 3 ? `\u2800${topThree[i + 1]}` : (i + 1) <= 9 ? `\u2800${numberToEmoji(i + 1)}` : numberToEmoji(i + 1);
-            statuses += `${elem.alive ? `✅` : `❌`}\u2800\u2800\u2800${rankNumber}\n`;
-            usernames += `${elem.username.length >= 15 ? (elem.username.substring(0, 15) + '...') : elem.username}\n`;
-            kills += `${elem.kills}\n`;
+            embed.description += `${elem.alive ? `❤️` : `💀`} `;
+            embed.description += `${elem.username.length > 10 ? (elem.username.substring(0, 10) + '..') : elem.username + ' '.repeat(12 - elem.username.length)} `;
+            embed.description += `${elem.kills}     ${elem.score >= 1000 ? (elem.score / 100 / 10.0 + 'k') : elem.score}\n`;
         }
-        embed.addFields(
-            { name: 'Alive\u2800\u2800Rank', value: statuses, inline: true },
-            { name: 'Name', value: usernames, inline: true },
-            { name: 'Kills', value: kills, inline: true },
-        )
+        embed.description += `\`\`\``;
+        // method 1
+        // for (let i = 0; i < Object.keys(leaderboardJSON).length; i++) {
+        //     const elem = leaderboardJSON[i];
+        //     const rankNumber = (i + 1) <= 3 ? `\u2800${topThree[i + 1]}` : (i + 1) <= 9 ? `\u2800${numberToEmoji(i + 1)}` : numberToEmoji(i + 1);
+        //     statuses += `${elem.alive ? `✅` : `❌`}\u2800\u2800\u2800${rankNumber}\n`;
+        //     usernames += `${elem.username.length >= 15 ? (elem.username.substring(0, 15) + '...') : elem.username}\n`;
+        //     kills += `${elem.kills}\n`;
+        // }
+        // embed.addFields(
+        //     { name: 'Alive\u2800\u2800Rank', value: statuses, inline: true },
+        //     { name: 'Name', value: usernames, inline: true },
+        //     { name: 'Kills', value: kills, inline: true },
+        // )
     }
     return embed;
 }
@@ -139,16 +142,16 @@ function makeBlankLeaderboardEmbed() {
 function numberToEmoji(number) {
     if (number < 0) return;
     const dict = {
-        0: ':zero:',
-        1: ':one:',
-        2: ':two:',
-        3: ':three:',
-        4: ':four:',
-        5: ':five:',
-        6: ':six:',
-        7: ':seven:',
-        8: ':eight:',
-        9: ':nine:'
+        0: '0️⃣',
+        1: '1️⃣',
+        2: '2️⃣',
+        3: '3️⃣',
+        4: '4️⃣',
+        5: '5️⃣',
+        6: '6️⃣',
+        7: '7️⃣',
+        8: '8️⃣',
+        9: '9️⃣'
     };
     if (number < 10) {
         return dict[number];

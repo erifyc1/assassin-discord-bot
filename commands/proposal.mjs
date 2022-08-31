@@ -38,7 +38,9 @@ export async function showProposalModal(interaction) {
                         maxLength: 100
                     })
                 ),
-                
+                /** 
+                 * @note MessageSelectMenu not supported on mobile client 8/31/22
+                 * @url https://stackoverflow.com/questions/73233994/extract-select-menu-values-from-modal-discord-js
             new MessageActionRow()
                 .addComponents(
                     new MessageSelectMenu({
@@ -72,7 +74,7 @@ export async function showProposalModal(interaction) {
                         ]
                     })
                 ),
-                
+                */
             new MessageActionRow()
                 .addComponents(
                     new TextInputComponent({
@@ -166,7 +168,9 @@ export async function executeDecision(interaction, client, accepted, votingChann
     const propEmbed = interaction.message.embeds[0];
 
     // modify the embed
-    propEmbed.addFields({ name: `${accepted ? `Approved` : `Blocked`} by:`, value: `<@${interaction.user.id}>`, inline: true });
+    propEmbed.addFields(
+        { name: `${accepted ? `Approved` : `Blocked`} by:`, value: `<@${interaction.user.id}>`, inline: true }
+    );
     await interaction.reply({ content: `You have successfully ${accepted ? `approved` : `blocked`} this proposal.`, ephemeral: true });
     
     // get author, open DM
@@ -181,9 +185,12 @@ export async function executeDecision(interaction, client, accepted, votingChann
         responseEmbed.description += `Congratulations! Your Cyclic Assassin Rule Proposal was accepted by a moderator.\nCheck out the <#${votingChannelId}> to view and discuss your proposal!`
         dmchannel.send({ embeds: [responseEmbed] });
 
-        // send proposal in voting channel
+        // send proposal in voting channel, modify to read 'ACTIVE'
+        propEmbed.addFields({ name: `Status:`, value: `✅ ACTIVE`, inline: false });
         const votingChannel = interaction.guild.channels.cache.get(votingChannelId);
         const message = await votingChannel.send({ embeds: [propEmbed] });
+
+        // start thread for chatting about proposal
         const thread = await message.startThread({
             name: `Discuss: '${proposalName}'`,
             autoArchiveDuration: 60,
@@ -191,8 +198,13 @@ export async function executeDecision(interaction, client, accepted, votingChann
             type: 'GUILD_PRIVATE_THREAD'
         });
         thread.send({ embeds: [{ title: 'This thread is for discussing the proposal posted above.', description: 'If you would like to hide this thread, hit \'**Leave Thread**\' or it will automatically hide after one hour of inactivity.'}]})
-        
         console.log(`Created thread: ${thread.name}`);
+
+        // modify admin embed to link to live embed in voting channel
+        // replace ✅ Active text since it will not be updated
+        propEmbed.fields[2] = { name: `Status:`, value: `[See Active Proposal](${message.url})` };
+
+        // set up reactions
         message.react('👍');
         message.react('👎');
     }
