@@ -26,7 +26,7 @@ export async function execute(interaction, client, guildsData) {
             }
             const currentGuildData = guildsData.guilds[idx];
             await refresh(client, currentGuildData);
-            await interaction.reply('Leaderboard refreshed, check <#' + currentGuildData.channels.leaderboard + '>.');
+            await interaction.reply({content: 'Leaderboard refreshed, check <#' + currentGuildData.channels.leaderboard + '>.', ephemeral: true });
             break;
             
             case 'toggle':
@@ -100,12 +100,12 @@ function makeLeaderboardEmbed(leaderboardJSON) {
         embed.addFields({ name: 'Error', value: 'Failed to fetch leaderboard', inline: false });
     }
     else {
-        embed.description = `\`\`\`❤️  Player      Kills Score\n`;
+        embed.description = `\`\`\`❤️/💀      👤      🏆  🔪\n---------------------------\n`;
         for (let i = 0; i < Object.keys(leaderboardJSON).length; i++) {
             const elem = leaderboardJSON[i];
-            embed.description += `${elem.alive ? `❤️` : `💀`} `;
+            embed.description += ` ${elem.alive ? `❤️` : `💀`}    `;
             embed.description += `${elem.username.length > 10 ? (elem.username.substring(0, 10) + '..') : elem.username + ' '.repeat(12 - elem.username.length)} `;
-            embed.description += `${elem.kills}     ${elem.score >= 1000 ? (elem.score / 100 / 10.0 + 'k') : elem.score}\n`;
+            embed.description += `${elem.score >= 1000 ? (elem.score / 100 / 10.0 + 'k') : elem.score}    ${elem.kills}\n`;
         }
         embed.description += `\`\`\``;
         // method 1
