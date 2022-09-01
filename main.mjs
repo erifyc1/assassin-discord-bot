@@ -3,6 +3,7 @@ import fetch from 'node-fetch';
 import { config } from 'dotenv'
 import fs from 'fs'
 import { registerCommands } from './deploy-commands.js'
+import { updateJson } from './utils.mjs'
 // import mongoose from 'mongoose'
 // mongoose.connect()
 
@@ -126,6 +127,7 @@ client.on('interactionCreate', async interaction => {
             switch (command.data.name) {
                 case 'delete':
                 case 'leaderboard':
+                case 'voting':
                     await command.execute(interaction, client, guildsData);
                     break;
                 case 'init':
@@ -168,7 +170,12 @@ client.on('interactionCreate', async interaction => {
                     }
                     const votingChannelId = guildsData.guilds[idx].channels['voting'];
                     const proposalCommand = await client.commands.get('proposal');
-                    await proposalCommand.proposalDecision(interaction, client, interaction.customId === 'proposalapproved', votingChannelId);
+                    const propMessageId = await proposalCommand.proposalDecision(interaction, client, interaction.customId === 'proposalapproved', votingChannelId);
+                    console.log(propMessageId);
+                    if (propMessageId) {
+                        guildsData.guilds[idx].activeProposals.push(propMessageId);
+                        updateJson(guildsData, `added active proposal to guild list`);
+                    }
                     break;
                 case 'copiedToken':
                     const linkCommand = await client.commands.get('link');

@@ -29,12 +29,12 @@ export async function execute(interaction, client, guildsData) {
             await interaction.reply({content: 'Leaderboard refreshed, check <#' + currentGuildData.channels.leaderboard + '>.', ephemeral: true });
             break;
             
-            case 'toggle':
-                // active = !active;
-                // const str = active ? 'Leaderboard enabled.' : 'Leaderboard disabled.';
-                await interaction.reply({ content: 'feature not implemented yet' });
-                break;
-            }
+        case 'toggle':
+            // active = !active;
+            // const str = active ? 'Leaderboard enabled.' : 'Leaderboard disabled.';
+            await interaction.reply({ content: 'feature not implemented yet' });
+            break;
+    }
 };
 
 export async function refresh(client, currentGuildData) {

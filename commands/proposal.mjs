@@ -147,15 +147,17 @@ export async function submitForReview(interaction, client, guildsData) {
  * @param {Client} client 
  * @param {CommandInteraction} interaction 
  * @param {boolean} accepted 
+ * @returns {int | null} messageId
  */
 export async function proposalDecision(interaction, client, accepted, votingChannelId = '') {
     if (accepted && votingChannelId) {
         // passes the proposal
-        await executeDecision(interaction, client, accepted, votingChannelId);
+        return await executeDecision(interaction, client, accepted, votingChannelId);
     }
     else {
         // ask for reason for denial
         await showReasonModal(interaction);
+        return null;
     }
 }
 /**
@@ -164,6 +166,7 @@ export async function proposalDecision(interaction, client, accepted, votingChan
  * @param {Client} client 
  * @param {boolean} accepted 
  * @param {String} votingChannelId 
+ * @returns {int | null} messageId
  */
 export async function executeDecision(interaction, client, accepted, votingChannelId = '') {
     const propEmbed = interaction.message.embeds[0];
@@ -208,20 +211,31 @@ export async function executeDecision(interaction, client, accepted, votingChann
         // set up reactions
         message.react('👍');
         message.react('👎');
-    }
-    else {
-        // send DM to proposal author
-        let reason = interaction.fields.getTextInputValue('reason');
-        if (!reason) reason = 'No reason given.';
-        responseEmbed.description += `We regret to inform you that your Cyclic Assassin Rule Proposal was blocked by a moderator.\nReason provided: ${reason}`;
-        dmchannel.send({ embeds: [responseEmbed] });
 
-        // cross out proposal embed
-        propEmbed.setTitle(`~~${propEmbed.title}~~`);
-        propEmbed.setDescription(`~~${propEmbed.description}~~`);
-        propEmbed.addFields({ name: 'Denial Reason: ', value: `${reason}`, inline: false})
+        // update proposal embed
+        await interaction.message.edit({ embeds: [propEmbed], components: [] });
+
+        // return proposal message id
+        return message.id;
     }
+
+    // else
+    // send DM to proposal author
+    let reason = interaction.fields.getTextInputValue('reason');
+    if (!reason) reason = 'No reason given.';
+    responseEmbed.description += `We regret to inform you that your Cyclic Assassin Rule Proposal was blocked by a moderator.\nReason provided: ${reason}`;
+    dmchannel.send({ embeds: [responseEmbed] });
+
+    // cross out proposal embed
+    propEmbed.setTitle(`~~${propEmbed.title}~~`);
+    propEmbed.setDescription(`~~${propEmbed.description}~~`);
+    propEmbed.addFields({ name: 'Denial Reason: ', value: `${reason}`, inline: false});
+
+    // update proposal embed
     await interaction.message.edit({ embeds: [propEmbed], components: [] });
+
+    // since proposal was not accepted, return null
+    return null;
 }
 
 /**

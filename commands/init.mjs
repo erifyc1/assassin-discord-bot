@@ -140,7 +140,8 @@ async function generateGuild(setupData, guild) {
         apiToken: '',
         categoryID: -1,
         channels: {},
-        roles: {}
+        roles: {},
+        activeProposals: []
     };
     // generate roles first, because channel permissions depend on existence
     guildData.roles = await generateRoles(roleData, guild);
