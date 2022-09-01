@@ -108,19 +108,6 @@ function makeLeaderboardEmbed(leaderboardJSON) {
             embed.description += `${elem.score >= 1000 ? (elem.score / 100 / 10.0 + 'k') : elem.score}    ${elem.kills}\n`;
         }
         embed.description += `\`\`\``;
-        // method 1
-        // for (let i = 0; i < Object.keys(leaderboardJSON).length; i++) {
-        //     const elem = leaderboardJSON[i];
-        //     const rankNumber = (i + 1) <= 3 ? `\u2800${topThree[i + 1]}` : (i + 1) <= 9 ? `\u2800${numberToEmoji(i + 1)}` : numberToEmoji(i + 1);
-        //     statuses += `${elem.alive ? `✅` : `❌`}\u2800\u2800\u2800${rankNumber}\n`;
-        //     usernames += `${elem.username.length >= 15 ? (elem.username.substring(0, 15) + '...') : elem.username}\n`;
-        //     kills += `${elem.kills}\n`;
-        // }
-        // embed.addFields(
-        //     { name: 'Alive\u2800\u2800Rank', value: statuses, inline: true },
-        //     { name: 'Name', value: usernames, inline: true },
-        //     { name: 'Kills', value: kills, inline: true },
-        // )
     }
     return embed;
 }
