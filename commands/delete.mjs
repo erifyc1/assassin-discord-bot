@@ -4,6 +4,8 @@ import { updateJson } from '../utils.mjs'
 export const data = new SlashCommandBuilder()
     .setName('delete')
     .setDescription('Removes all game-related channels and messages.');
+data.setDefaultPermission(false);
+// data.setDMPermission(false);
     
 export async function execute(interaction, client, guildsData) {
     if (!interaction.replied && !interaction.deferred) await interaction.deferReply();

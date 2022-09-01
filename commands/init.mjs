@@ -5,6 +5,8 @@ import { MessageActionRow, MessageButton, MessageEmbed } from 'discord.js';
 export const data = new SlashCommandBuilder()
     .setName('init')
     .setDescription('Initializes the game by generating the channel structure.');
+data.setDefaultPermission(false);
+// data.setDMPermission(false);
     
 export async function execute(interaction, setupData) {
     if (!interaction.replied && !interaction.deferred) await interaction.deferReply();

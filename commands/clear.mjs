@@ -7,6 +7,8 @@ export const data = new SlashCommandBuilder()
 		num.setName('num_messages')
 			.setDescription('How many messages to delete. (default = 10, max = 50)')
 			.setRequired(false));
+data.setDefaultPermission(false);
+// data.setDMPermission(false);
     
 export async function execute(interaction) {
     await interaction.deferReply();

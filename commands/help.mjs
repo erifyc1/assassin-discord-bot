@@ -3,7 +3,8 @@ import { MessageEmbed } from 'discord.js';
 
 export const data = new SlashCommandBuilder()
     .setName('help')
-    .setDescription('Help command for use of the Cyclic Assassin Bot.');
+    .setDescription('Help command for use of the Cyclic Assassin Bot.')
+// data.setDMPermission(false);
     
 export async function execute(interaction) {
     // reqired fields

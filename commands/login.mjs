@@ -1,9 +1,10 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { Message, MessageActionRow, MessageButton, Modal, TextInputComponent } from 'discord.js';
+import { MessageActionRow, MessageButton, Modal, TextInputComponent } from 'discord.js';
 
 export const data = new SlashCommandBuilder()
     .setName('login')
     .setDescription('logs into website');
+// data.setDMPermission(false);
     
 export async function execute(interaction) {
     interaction.deferReply();

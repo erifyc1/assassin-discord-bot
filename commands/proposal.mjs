@@ -15,6 +15,7 @@ const colors = {
 export const data = new SlashCommandBuilder()
     .setName('proposal')
     .setDescription('Adds a proposal that everyone can vote on.');
+// data.setDMPermission(false);
 
 export async function execute(interaction) {
     await showProposalModal(interaction);

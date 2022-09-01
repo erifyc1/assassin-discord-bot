@@ -13,6 +13,8 @@ export const data = new SlashCommandBuilder()
 				{ name: 'refresh', value: 'refresh' },
 				{ name: 'toggle', value: 'toggle' },
 			));
+data.setDefaultPermission(false);
+// data.setDMPermission(false);
 
 export async function execute(interaction, client, guildsData) {
     switch (interaction.options.getString('subcommand')) {

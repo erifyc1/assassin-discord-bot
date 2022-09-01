@@ -4,7 +4,8 @@ import { MessageEmbed } from 'discord.js';
 export const data = new SlashCommandBuilder()
     .setName('join')
     .setDescription('Sends you information on how to join Cyclic Assassin!');
-    
+// data.setDMPermission(false);
+
 export async function execute(interaction) {
     const joinEmbed = await makeEmbed(joinEmbedData);
     const dmchannel = await interaction.member.user.createDM();

@@ -1,11 +1,18 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { Modal, MessageActionRow, TextInputComponent, MessageButton } from 'discord.js';
+import { MessageEmbed, Modal, MessageActionRow, TextInputComponent, MessageButton } from 'discord.js';
 import { updateJson } from '../utils.mjs'
 import fetch from 'node-fetch';
 
 export const data = new SlashCommandBuilder()
-    .setName('link')
-    .setDescription('Links a Cyclic Assasin game to the current Discord server.');
+    .setName('voting')
+    .setDescription('Controls aspects of game voting.')
+    .addStringOption(option =>
+		option.setName('option')
+			.setDescription('Voting system command options')
+			.setRequired(true)
+			.addChoices(
+				{ name: 'end', value: 'end' },
+			));
 data.setDefaultPermission(false);
 // data.setDMPermission(false);
 
