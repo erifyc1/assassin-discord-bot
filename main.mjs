@@ -10,17 +10,18 @@ import { updateJson } from './utils.mjs'
 
 
 config();
-const apiKey = process.env.API_KEY;
 const discordAuth = process.env.DISCORD_AUTH;
+const debug_gid = process.env.DEBUG_GUILD_ID;
+const debug_chid = process.env.DEBUG_CHANNEL_ID;
 
 const client = new Client({intents: ["GUILDS", "GUILD_MESSAGES"]});
 client.commands = new Collection();
 const commandsPath = './commands';
 const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.mjs'));
 
-await printDebug('Importing slash commands:');
+console.log('Importing slash commands:');
 for (const file of commandFiles) {
-    await printDebug('\t' + commandsPath + '/' + file);
+    console.log('\t' + commandsPath + '/' + file);
     import(commandsPath + '/' + file).then((command) => {
         client.commands.set(command.data.name, command);
     });
@@ -37,48 +38,52 @@ const filePaths =
 }
 
 
-client.on("guildMemberAdd", async () => {
-    return 'hi';
-});
-
-
+// client.on("guildMemberAdd", async () => {
+//     return 'hi';
+// });
 
 
 client.on("ready", async () => {
     // set up bot
-    await printDebug('--------------------------');
-    await printDebug(`Booted bot instance: ${client.user.tag}`);
+    const currentDate = new Date();
+    const bootupMessage = `--------------------------\nBooted bot instance: ${client.user.tag} at\n${currentDate}`;
+    console.log(bootupMessage);
+    const guild = client.guilds.cache.get(debug_gid);
+    if (guild) {
+        const channel = guild.channels.cache.get(debug_chid);
+        if (channel) channel.send(`\`\`\`${bootupMessage}\`\`\``);
+    }
     client.user.setActivity('cyclic.games', { type: 'COMPETING' });
 
     // read files
-    await printDebug('Reading json files');
+    console.log('Reading json files');
     fs.readFile(filePaths.guilds, 'utf-8', (err, data) => {
         if (err) throw err;
         guildsData = JSON.parse(data.toString());
-        printDebug('\tRead from ' + filePaths.guilds);
+        console.log('\tRead from ' + filePaths.guilds);
     });
     fs.readFile(filePaths.channels, 'utf-8', (err, data) => {
         if (err) throw err;
         channelData = JSON.parse(data.toString());
-        printDebug('\tRead from ' + filePaths.channels);
+        console.log('\tRead from ' + filePaths.channels);
     });
     fs.readFile(filePaths.permissions, 'utf-8', (err, data) => {
         if (err) throw err;
         permissionData = JSON.parse(data.toString());
-        printDebug('\tRead from ' + filePaths.permissions);
+        console.log('\tRead from ' + filePaths.permissions);
     });
     fs.readFile(filePaths.roles, 'utf-8', (err, data) => {
         if (err) throw err;
         roleData = JSON.parse(data.toString());
-        printDebug('\tRead from ' + filePaths.roles);
+        console.log('\tRead from ' + filePaths.roles);
     });
     
     // register slash commands to every guild that bot is in
 	client.guilds.fetch().then((guilds) => {
-        printDebug('Registering slash commands to all known guilds.');
+        console.log('Registering slash commands to all known guilds.');
         let idx = 0;
 		guilds.map((guild) => {
-            printDebug('\tRegistering guild #' + idx++ + ': ' + guild.name + ' (' + guild.id + ')');
+            console.log('\tRegistering guild #' + idx++ + ': ' + guild.name + ' (' + guild.id + ')');
 			registerCommands(guild.id);
 		});
 	})
@@ -86,7 +91,7 @@ client.on("ready", async () => {
 
 client.on("guildCreate", async (guild) => {
     // register slash commands to guild that adds bot
-    await printDebug('\tRegistering guild: ' + guild.name + ' (' + guild.id + ')');
+    console.log('\tRegistering guild: ' + guild.name + ' (' + guild.id + ')');
     registerCommands(guild.id);
 });
 
@@ -112,7 +117,7 @@ client.on("messageCreate", async (msg) => {
             headers: { 'Authorization': ('Token ' + data.token) }
         });
         const data2 = await res2.json();
-        await printDebug(data2);
+        console.log(data2);
     }
     
 });
@@ -123,7 +128,7 @@ client.on('interactionCreate', async interaction => {
     
         if (!command) return;
         try {
-            await printDebug('-> command triggered: ' + command.data.name);
+            console.log('-> command triggered: ' + command.data.name);
             switch (command.data.name) {
                 case 'delete':
                 case 'leaderboard':
@@ -217,16 +222,5 @@ client.on('interactionCreate', async interaction => {
     }
 
 });
-
-async function printDebug(string) {
-    const debug_gid = '976344115547615252';
-    const debug_chid = '980356193245593662';
-    const guild = client.guilds.cache.get(debug_gid);
-    if (guild) {
-        const channel = guild.channels.cache.get(debug_chid);
-        if (string && channel) channel.send('`' + string + '`');
-    }
-    console.log(string);
-}
 
 client.login(discordAuth);
