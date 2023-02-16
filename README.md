@@ -11,7 +11,8 @@ This bot allows users to access features from the [main website](http://www.cycl
 * Ability to make new rule proposals and vote on them (with admin approval)
 * Account linking to the main website to view your target's details
 * Refined explanations of the game pre-loaded into the channels
-* All of the bot's setup is written in JSON files for easy modification without code knowledge
+* Bot setup is written in JSON files for easy modification without code knowledge
+* Modular structure for creating custom slash commands
 * Various configuration settings for different users
 
 ## Developer Info
