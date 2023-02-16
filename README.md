@@ -13,3 +13,8 @@ This bot allows users to access features from the [main website](http://www.cycl
 * Refined explanations of the game pre-loaded into the channels
 * All of the bot's setup is written in JSON files for easy modification without code knowledge
 * Various configuration settings for different users
+
+## Developer Info
+For the bot to work, create a .env in the root directory with the following variables
+* DISCORD_AUTH="discord authentication token"
+* CLIENT_ID="discord bot client id"
